@@ -1,0 +1,55 @@
+﻿@model FitHub.Models.PaymentMethod
+
+<h4>PaymentMethod</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="ProcessPayment">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.CardType, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.CardType, new SelectList(new[]
+                             {
+                    new SelectListItem { Value = "Visa", Text = "Visa" },
+                    new SelectListItem { Value = "MasterCard", Text = "MasterCard" },
+                    new SelectListItem { Value = "AmericanExpress", Text = "American Express" },
+                    }, "Value", "Text"), "Select Card Type", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.CardType, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="NameOnCard" class="control-label"></label>
+                <input asp-for="NameOnCard" class="form-control" />
+                <span asp-validation-for="NameOnCard" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CardNumber" class="control-label"></label>
+                <input asp-for="CardNumber" class="form-control" />
+                <span asp-validation-for="CardNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExpiryDate" class="control-label"></label>
+                <input asp-for="ExpiryDate" class="form-control" />
+                <span asp-validation-for="ExpiryDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CVV" class="control-label"></label>
+                <input asp-for="CVV" class="form-control" />
+                <span asp-validation-for="CVV" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Process Payment</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
