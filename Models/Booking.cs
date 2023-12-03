@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Xml.Serialization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FitHub.Models
 {
@@ -19,6 +20,7 @@ namespace FitHub.Models
         [Display(Name = "User Id")]
         public string UserID { get; set; }
 
+        [ForeignKey("Amenity")]
         [Required(ErrorMessage = "Amenity Id is Required")]
         [Display(Name = "Amenity Id")]
         public string AmenityID { get; set; }
@@ -40,7 +42,18 @@ namespace FitHub.Models
         [Required(ErrorMessage = "Amount Paid is Required")]
         [DataType(DataType.Currency)]
         [Display(Name = "Amount Paid")]
-        public decimal AmountPaid { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public decimal AmountPaid
+        {
+            get
+            {
+                if (Amenity != null)
+                {
+                    return Amenity.CostPerPerson * NumberOfPeople;
+                }
+                return 0;  
+            }
+        }
 
         [Required(ErrorMessage = "Purchased Date is Required")]
         [DataType(DataType.Date)]
@@ -49,6 +62,7 @@ namespace FitHub.Models
         public DateTime PurchasedDate { get; set; }
 
         public virtual User User { get; set; }
+        public virtual Amenity Amenity { get; set; }
     }
 }
 
