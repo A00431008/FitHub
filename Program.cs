@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using FitHub.Data;
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<BookingContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("BookingContext") ?? throw new InvalidOperationException("Connection string 'BookingContext' not found.")));
 builder.Services.AddDbContext<AmenityContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AmenityContext") ?? throw new InvalidOperationException("Connection string 'AmenityContext' not found.")));
 

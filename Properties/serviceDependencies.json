@@ -8,6 +8,10 @@
     "mssql2": {
       "type": "mssql",
       "connectionId": "ConnectionStrings:AmenityContext"
+    },
+    "mssql3": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:BookingContext"
     }
   }
 }
