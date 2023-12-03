@@ -10,10 +10,6 @@
     "mssql2": {
       "type": "mssql.local",
       "connectionId": "ConnectionStrings:AmenityContext"
-    },
-    "mssql3": {
-      "type": "mssql.local",
-      "connectionId": "ConnectionStrings:BookingContext"
     }
   }
 }
