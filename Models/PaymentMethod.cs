@@ -22,6 +22,7 @@ namespace FitHub.Models
         public string ExpiryDate { get; set; }
 
         [Required(ErrorMessage = "CVV is Required")]
+        [RegularExpression(@"^[0-9]{3,4}$", ErrorMessage = "Invalid CVV")]
         public string CVV { get; set; }   
     }
 }
