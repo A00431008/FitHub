@@ -27,6 +27,18 @@ namespace FitHub.Validations
         }
     }
 
+    public class DateEqualToCurrent : ValidationAttribute
+    {
+        protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
+        {
+            if (value != null && (DateTime)value != DateTime.Now)
+            {
+                return new ValidationResult(ErrorMessage);
+            }
+            return ValidationResult.Success;
+        }
+    }
+
     public class MinimumAgeAttribute : ValidationAttribute
     {
         private readonly int _minimumAge;

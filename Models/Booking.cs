@@ -28,7 +28,7 @@ namespace FitHub.Models
         [Required(ErrorMessage = "Booking Date is Required")]
         [DataType(DataType.Date)]
         [RegularExpression(@"^\d{4}-\d{2}-\d{2}$", ErrorMessage = "Date must be in the format 'YYYY-MM-DD'.")]
-        //[DateNotInPastAttribute(ErrorMessage = "The date must be greater than or equal to the current date.")]
+        [DateNotInPastAttribute(ErrorMessage = "The date must be greater than or equal to the current date.")]
         [Display(Name = "Booking Date")]
         public DateTime BookingDate { get; set; }
 
