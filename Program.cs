@@ -1,4 +1,9 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using FitHub.Data;
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<SaunaContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("SaunaContext") ?? throw new InvalidOperationException("Connection string 'SaunaContext' not found.")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
