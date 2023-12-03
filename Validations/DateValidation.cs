@@ -64,7 +64,6 @@ namespace FitHub.Validations
 
             return ValidationResult.Success;
         }
-
-
     }
+
 }

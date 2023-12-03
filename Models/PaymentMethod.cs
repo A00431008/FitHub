@@ -14,9 +14,11 @@ namespace FitHub.Models
 
         [Required(ErrorMessage = "Card Number is Required")]
         [CreditCard(ErrorMessage = "Invalid Credit Card Number")]
+        [CardValidation(ErrorMessage = "Invalid Credit Card Number")]
         public string CardNumber { get; set; }
 
         [Required(ErrorMessage = "Expiry Date is Required")]
+        [ExpiryValidation]
         public string ExpiryDate { get; set; }
 
         [Required(ErrorMessage = "CVV is Required")]
