@@ -48,11 +48,15 @@ namespace FitHub.Models
         {
             get
             {
+                return amountPaid;
+            }
+            private set
+            {
                 if (Amenity != null)
                 {
-                    return Amenity.CostPerPerson * NumberOfPeople;
+                    amountPaid = Amenity.CostPerPerson * NumberOfPeople;
                 }
-                return 0;  
+                amountPaid = 0;  
             }
         }
 
@@ -65,12 +69,22 @@ namespace FitHub.Models
         {
             get
             {
-                return DateTime.Now;
+                return purchasedDate;
+            }
+
+            private set
+            {
+                purchasedDate = DateTime.Now;
             }
         }
 
         public virtual User User { get; set; }
         public virtual Amenity Amenity { get; set; }
+
+        private DateTime purchasedDate;
+        private decimal amountPaid;
+
+
     }
 }
 
