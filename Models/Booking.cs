@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Xml.Serialization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FitHub.Models
 {
@@ -19,14 +20,16 @@ namespace FitHub.Models
         [Display(Name = "User Id")]
         public string UserID { get; set; }
 
+        [ForeignKey("Amenity")]
         [Required(ErrorMessage = "Amenity Id is Required")]
         [Display(Name = "Amenity Id")]
         public string AmenityID { get; set; }
 
         [Required(ErrorMessage = "Booking Date is Required")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}", ApplyFormatInEditMode = true)]
-        [DateGreaterThanEqualToCurrent(ErrorMessage = "The date must be greater than or equal to the current date.")]
+        [RegularExpression(@"^\d{4}-\d{2}-\d{2}$", ErrorMessage = "Date must be in the format 'YYYY-MM-DD'.")]
+        [DateNotInPastAttribute(ErrorMessage = "The date must be greater than or equal to the current date.")]
+        [Display(Name = "Booking Date")]
         public DateTime BookingDate { get; set; }
 
         [Required(ErrorMessage = "Slot Number is Required")]
@@ -40,15 +43,34 @@ namespace FitHub.Models
         [Required(ErrorMessage = "Amount Paid is Required")]
         [DataType(DataType.Currency)]
         [Display(Name = "Amount Paid")]
-        public decimal AmountPaid { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public decimal AmountPaid
+        {
+            get
+            {
+                if (Amenity != null)
+                {
+                    return Amenity.CostPerPerson * NumberOfPeople;
+                }
+                return 0;  
+            }
+        }
 
         [Required(ErrorMessage = "Purchased Date is Required")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}", ApplyFormatInEditMode = true)]
+        [RegularExpression(@"^\d{4}-\d{2}-\d{2}$", ErrorMessage = "Date must be in the format 'YYYY-MM-DD'.")]
         [DateEqualToCurrent(ErrorMessage = "The date must be equal to the current date.")]
-        public DateTime PurchasedDate { get; set; }
+        [Display(Name = "Purchased Date")]
+        public DateTime PurchasedDate
+        {
+            get
+            {
+                return DateTime.Now;
+            }
+        }
 
         public virtual User User { get; set; }
+        public virtual Amenity Amenity { get; set; }
     }
 }
 

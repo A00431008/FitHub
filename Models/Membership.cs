@@ -2,11 +2,15 @@
 using System.Runtime.CompilerServices;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using FitHub.Validations;
 
 namespace FitHub.Models
 {
     public class Membership
     {
+        private decimal _AmountPaid;
+        private DateTime _EndDate;
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string MembershipID { get; set; }
@@ -14,43 +18,68 @@ namespace FitHub.Models
         [ForeignKey("User")]
         public string UserID { get; set; }
 
-        public virtual User User { get; set; }
-
         [Required]
-        public string MembershipType { get; set; }
-
-        [Required]
+        [RegularExpression(@"^\d{4}-\d{2}-\d{2}$", 
+            ErrorMessage = "Date must be in the format 'YYYY-MM-DD'.")]
+        [DateNotInPastAttribute(ErrorMessage = 
+            "The date must be greater than or equal to the current date.")]
         [Display(Name = "Start Date")]
         [DataType(DataType.Date)]
         public DateTime StartDate { get; set; }
 
         [Required]
         [Display(Name = "End Date"), DataType(DataType.Date)]
-        public DateTime EndDate { get; set; }
-
-        /*public void CalculateEndDate()
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public DateTime EndDate
         {
-            if (StartDate != null && DurationMonths > 0)
-            {
-                EndDate = StartDate.AddMonths(DurationMonths);
-            }
-            else
-            {
-                // Handle error or default behavior when StartDate or Duration is invalid
-                // For example:
-                // throw new InvalidOperationException("Invalid Start Date or Duration");
-                // or set a default EndDate
-                // EndDate = DateTime.Now; // Set it to current date/time
-            }
+            get => _EndDate;
+            set => _EndDate = StartDate.AddMonths(MD.DurationMonths);
         }
-         * 
-         * You can call this method whenever you want to update the EndDate. 
-         * For instance, in your controller, when creating or updating a 
-         * Membership object, you can set the StartDate and DurationMonths, 
-         * and then call CalculateEndDate() to compute the EndDate.*/
+        //public DateTime EndDate
+        //{
+        //    get
+        //    {
+        //        return EndDate;
+        //    }
+        //    set
+        //    {
+        //        if (MD != null)
+        //        {
+        //            EndDate = StartDate.AddMonths(MD.DurationMonths);
+        //        }
+        //        //return StartDate; //doubtful
+        //    }
+        //}
+        
 
-        [Required]
+        [Required/*(ErrorMessage = "Amount Paid is Required")*/]
+        [DataType(DataType.Currency)]
         [Display(Name = "Amount Paid")]
-        public string AmountPaid { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public decimal AmountPaid
+        {
+            get => _AmountPaid;
+            set => _AmountPaid = MD.Cost;
+        }
+        //public decimal AmountPaid
+        //{
+        //    get
+        //    {
+        //        return AmountPaid;
+        //    }
+        //    private set
+        //    {
+        //        if (MD != null)
+        //        {
+        //            AmountPaid = MD.Cost;
+        //        }
+        //    }
+        //}
+
+        [ForeignKey("MD")]
+        public string MembershipTypeID { get; set; }
+
+        public virtual MembershipDetail MD { get; set; }
+        public virtual User User { get; set; }
     }
 }

@@ -3,43 +3,68 @@
 namespace FitHub.Validations
 {
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
-    public class DateGreaterThanEqualToCurrent : ValidationAttribute
+    public class DateNotInFutureAttribute : ValidationAttribute
     {
-        public override bool IsValid(object value)
+        protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
-            if (value is DateTime date)
+            if (value != null && (DateTime)value > DateTime.Now)
             {
-                if (date >= DateTime.Now)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return new ValidationResult(ErrorMessage);
             }
+            return ValidationResult.Success;
+        }
+    }
 
-            return false; 
+    public class DateNotInPastAttribute : ValidationAttribute
+    {
+        protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
+        {
+            if (value != null && (DateTime)value < DateTime.Now)
+            {
+                return new ValidationResult(ErrorMessage);
+            }
+            return ValidationResult.Success;
         }
     }
 
     public class DateEqualToCurrent : ValidationAttribute
     {
-        public override bool IsValid(object value)
+        protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
-            if (value is DateTime date)
+            if (value != null && (DateTime)value != DateTime.Now)
             {
-                if (date == DateTime.Now)
+                return new ValidationResult(ErrorMessage);
+            }
+            return ValidationResult.Success;
+        }
+    }
+
+    public class MinimumAgeAttribute : ValidationAttribute
+    {
+        private readonly int _minimumAge;
+
+        public MinimumAgeAttribute(int minimumAge) { _minimumAge = minimumAge; }
+
+        protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
+        {
+            if (value != null)
+            {
+                DateTime dob = (DateTime)value;
+                int age = DateTime.Now.Year - dob.Year;
+                if (dob > DateTime.Now.AddYears(-age))
                 {
-                    return true;
+                    age--;
                 }
-                else
+
+                if ( age < _minimumAge) 
                 {
-                    return false;
+                    return new ValidationResult(ErrorMessage);
                 }
             }
 
-            return false;
+            return ValidationResult.Success;
         }
+
+
     }
 }
