@@ -12,9 +12,9 @@ namespace FitHub.Controllers
 {
     public class SaunasController : Controller
     {
-        private readonly SaunaContext _context;
+        private readonly GymDbContext _context;
 
-        public SaunasController(SaunaContext context)
+        public SaunasController(GymDbContext context)
         {
             _context = context;
         }
@@ -24,7 +24,7 @@ namespace FitHub.Controllers
         {
               return _context.Sauna != null ? 
                           View(await _context.Sauna.ToListAsync()) :
-                          Problem("Entity set 'SaunaContext.Sauna'  is null.");
+                          Problem("Entity set 'GymDbContext.Sauna'  is null.");
         }
 
         // GET: Saunas/Details/5
@@ -143,7 +143,7 @@ namespace FitHub.Controllers
         {
             if (_context.Sauna == null)
             {
-                return Problem("Entity set 'SaunaContext.Sauna'  is null.");
+                return Problem("Entity set 'GymDbContext.Sauna'  is null.");
             }
             var sauna = await _context.Sauna.FindAsync(id);
             if (sauna != null)

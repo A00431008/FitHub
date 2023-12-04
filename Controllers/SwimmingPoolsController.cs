@@ -12,9 +12,9 @@ namespace FitHub.Controllers
 {
     public class SwimmingPoolsController : Controller
     {
-        private readonly SwimmingPoolContext _context;
+        private readonly GymDbContext _context;
 
-        public SwimmingPoolsController(SwimmingPoolContext context)
+        public SwimmingPoolsController(GymDbContext context)
         {
             _context = context;
         }
@@ -24,7 +24,7 @@ namespace FitHub.Controllers
         {
               return _context.SwimmingPool != null ? 
                           View(await _context.SwimmingPool.ToListAsync()) :
-                          Problem("Entity set 'SwimmingPoolContext.SwimmingPool'  is null.");
+                          Problem("Entity set 'GymDbContext.SwimmingPool'  is null.");
         }
 
         // GET: SwimmingPools/Details/5
@@ -143,7 +143,7 @@ namespace FitHub.Controllers
         {
             if (_context.SwimmingPool == null)
             {
-                return Problem("Entity set 'SwimmingPoolContext.SwimmingPool'  is null.");
+                return Problem("Entity set 'GymDbContext.SwimmingPool'  is null.");
             }
             var swimmingPool = await _context.SwimmingPool.FindAsync(id);
             if (swimmingPool != null)

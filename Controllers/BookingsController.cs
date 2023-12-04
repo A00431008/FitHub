@@ -12,9 +12,9 @@ namespace FitHub.Controllers
 {
     public class BookingsController : Controller
     {
-        private readonly BookingContext _context;
+        private readonly GymDbContext _context;
 
-        public BookingsController(BookingContext context)
+        public BookingsController(GymDbContext context)
         {
             _context = context;
         }
@@ -22,8 +22,8 @@ namespace FitHub.Controllers
         // GET: Bookings
         public async Task<IActionResult> Index()
         {
-            var bookingContext = _context.Booking.Include(b => b.Amenity).Include(b => b.User);
-            return View(await bookingContext.ToListAsync());
+            var gymDbContext = _context.Booking.Include(b => b.Amenity).Include(b => b.User);
+            return View(await gymDbContext.ToListAsync());
         }
 
         // GET: Bookings/Details/5
@@ -49,7 +49,7 @@ namespace FitHub.Controllers
         // GET: Bookings/Create
         public IActionResult Create()
         {
-            ViewData["AmenityID"] = new SelectList(_context.Set<Amenity>(), "AmenityID", "AmenityID");
+            ViewData["AmenityID"] = new SelectList(_context.Amenity, "AmenityID", "AmenityID");
             ViewData["UserID"] = new SelectList(_context.Set<User>(), "UserID", "UserID");
             return View();
         }
@@ -67,7 +67,7 @@ namespace FitHub.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AmenityID"] = new SelectList(_context.Set<Amenity>(), "AmenityID", "AmenityID", booking.AmenityID);
+            ViewData["AmenityID"] = new SelectList(_context.Amenity, "AmenityID", "AmenityID", booking.AmenityID);
             ViewData["UserID"] = new SelectList(_context.Set<User>(), "UserID", "UserID", booking.UserID);
             return View(booking);
         }
@@ -85,7 +85,7 @@ namespace FitHub.Controllers
             {
                 return NotFound();
             }
-            ViewData["AmenityID"] = new SelectList(_context.Set<Amenity>(), "AmenityID", "AmenityID", booking.AmenityID);
+            ViewData["AmenityID"] = new SelectList(_context.Amenity, "AmenityID", "AmenityID", booking.AmenityID);
             ViewData["UserID"] = new SelectList(_context.Set<User>(), "UserID", "UserID", booking.UserID);
             return View(booking);
         }
@@ -122,7 +122,7 @@ namespace FitHub.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AmenityID"] = new SelectList(_context.Set<Amenity>(), "AmenityID", "AmenityID", booking.AmenityID);
+            ViewData["AmenityID"] = new SelectList(_context.Amenity, "AmenityID", "AmenityID", booking.AmenityID);
             ViewData["UserID"] = new SelectList(_context.Set<User>(), "UserID", "UserID", booking.UserID);
             return View(booking);
         }
@@ -154,7 +154,7 @@ namespace FitHub.Controllers
         {
             if (_context.Booking == null)
             {
-                return Problem("Entity set 'BookingContext.Booking'  is null.");
+                return Problem("Entity set 'GymDbContext.Booking'  is null.");
             }
             var booking = await _context.Booking.FindAsync(id);
             if (booking != null)

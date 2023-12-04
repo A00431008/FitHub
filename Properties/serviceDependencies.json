@@ -1,24 +1,9 @@
 {
   "dependencies": {
-    "mssql1": {
-      "type": "mssql",
-      "connectionId": "ConnectionStrings:SaunaContext"
-    },
-    "mssql2": {
-      "type": "mssql",
-      "connectionId": "ConnectionStrings:SpaContext"
-    },
-    "mssql3": {
-      "type": "mssql",
-      "connectionId": "ConnectionStrings:SwimmingPoolContext"
-    },
-    "mssql4": {
-      "type": "mssql",
-      "connectionId": "ConnectionStrings:AmenityContext"
-    },
     "mssql5": {
       "type": "mssql",
-      "connectionId": "ConnectionStrings:BookingContext"
+      "connectionId": "ConnectionStrings:GymDbContext",
+      "dynamicId": null
     }
   }
 }

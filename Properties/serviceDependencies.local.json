@@ -1,24 +1,11 @@
 {
-  "dependencies": {
-    "mssql1": {
-      "type": "mssql.local",
-      "connectionId": "ConnectionStrings:SaunaContext"
-    },
-    "mssql2": {
-      "type": "mssql.local",
-      "connectionId": "ConnectionStrings:SpaContext"
-    },
-    "mssql3": {
-      "type": "mssql.local",
-      "connectionId": "ConnectionStrings:SwimmingPoolContext"
-    },
-    "mssql4": {
-      "type": "mssql.local",
-      "connectionId": "ConnectionStrings:AmenityContext"
-    },
+  "dependencies": {    
     "mssql5": {
-      "type": "mssql.local",
-      "connectionId": "ConnectionStrings:BookingContext"
+      "serviceConnectorResourceId": "",
+      "secretStore": "LocalSecretsFile",
+      "type": "mssql.onprem",
+      "connectionId": "ConnectionStrings:GymDbContext",
+      "dynamicId": null
     }
   }
 }

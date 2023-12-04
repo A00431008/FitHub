@@ -1,4 +1,5 @@
-﻿using FitHub.Data;
+﻿//using FitHub.Data;
+using FitHub.Data;
 using FitHub.Models;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
@@ -8,28 +9,10 @@ namespace FitHub.Validations
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
     public class CapacityValidation : ValidationAttribute
     {
-        private readonly SwimmingPoolContext swimmingPoolContext;
-        public CapacityValidation(SwimmingPoolContext swimmingPoolDbContext)
+        private readonly GymDbContext gymDbContext;
+        public CapacityValidation(GymDbContext gymContext)
         {
-            this.swimmingPoolContext = swimmingPoolDbContext;
-        }
-
-        private readonly SaunaContext saunaContext;
-        public CapacityValidation(SaunaContext saunaDbContext)
-        {
-            this.saunaContext = saunaDbContext;
-        }
-
-        private readonly SpaContext spaContext;
-        public CapacityValidation(SpaContext spaDbContext)
-        {
-            this.spaContext = spaDbContext;
-        }
-
-        private readonly BookingContext bookingContext;
-        public CapacityValidation(BookingContext bookingDbContext)
-        {
-            this.bookingContext = bookingDbContext;
+            this.gymDbContext = gymContext;
         }
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
@@ -87,12 +70,12 @@ namespace FitHub.Validations
 
         private int GetSwimmingPoolNumberReserved(DateTime date, string amenityId)
         {
-            using (swimmingPoolContext)
+            using (gymDbContext)
             {
                 try
                 {
                     int numberReserved = 0;
-                    var swimmingPool = swimmingPoolContext.SwimmingPool
+                    var swimmingPool = gymDbContext.SwimmingPool
                                     .Where(r => r.Date == date)
                                     .FirstOrDefault();
                     if (swimmingPool != null)
@@ -112,12 +95,12 @@ namespace FitHub.Validations
 
         private int GetSaunaNumberReserved(DateTime date, string amenityId)
         {
-            using (saunaContext)
+            using (gymDbContext)
             { 
                 try
                 {
                     int numberReserved = 0;
-                    var sauna = saunaContext.Sauna
+                    var sauna = gymDbContext.Sauna
                                 .Where(r => r.Date == date)
                                 .FirstOrDefault();
                     if (sauna != null)
@@ -137,12 +120,12 @@ namespace FitHub.Validations
 
         private int GetSpaNumberReserved(DateTime date, string amenityId)
         {
-            using (spaContext)
+            using (gymDbContext)
             {
                 try
                 {
                     int numberReserved = 0;
-                    var spa = spaContext.Spa
+                    var spa = gymDbContext.Spa
                                 .Where(r => r.Date == date)
                                 .FirstOrDefault();
                     if (spa != null)
@@ -163,11 +146,11 @@ namespace FitHub.Validations
 
         private Booking GetMaxCapacityPerDay(Booking booking)
         {
-            using (bookingContext)
+            using (gymDbContext)
             {
                 try
                 {
-                    booking = bookingContext.Booking
+                    booking = gymDbContext.Booking
                         .Include(b => b.Amenity) 
                         .Where(b => b.BookingID == booking.BookingID)
                         .FirstOrDefault();
@@ -183,11 +166,11 @@ namespace FitHub.Validations
 
         private void UpdateSwimmingPoolSlots(DateTime bookingDate, string amenityId, int numberOfPeople)
         {
-            using (swimmingPoolContext)
+            using (gymDbContext)
             {
                 try
                 {
-                    var swimmingPool = swimmingPoolContext.SwimmingPool
+                    var swimmingPool = gymDbContext.SwimmingPool
                                     .Where(r => r.Date == bookingDate)
                                     .FirstOrDefault();
 
@@ -197,14 +180,14 @@ namespace FitHub.Validations
                     }
                     else
                     {
-                        swimmingPoolContext.SwimmingPool.Add(new SwimmingPool
+                        gymDbContext.SwimmingPool.Add(new SwimmingPool
                         {
                             Date = bookingDate,
                             NumberReserved = numberOfPeople
                         });
                     }
 
-                    swimmingPoolContext.SaveChanges();
+                    gymDbContext.SaveChanges();
                 }
 
                 catch (Exception ex)
@@ -216,11 +199,11 @@ namespace FitHub.Validations
 
         private void UpdateSaunaSlots(DateTime bookingDate, string amenityId, int numberOfPeople)
         {
-            using (saunaContext)
+            using (gymDbContext)
             {
                 try
                 {
-                    var sauna = saunaContext.Sauna
+                    var sauna = gymDbContext.Sauna
                                 .Where(r => r.Date == bookingDate)
                                 .FirstOrDefault();
 
@@ -230,14 +213,14 @@ namespace FitHub.Validations
                     }
                     else
                     {
-                        saunaContext.Sauna.Add(new Sauna
+                        gymDbContext.Sauna.Add(new Sauna
                         {
                             Date = bookingDate,
                             NumberReserved = numberOfPeople
                         });
                     }
 
-                    saunaContext.SaveChanges();
+                    gymDbContext.SaveChanges();
                 }
 
                 catch (Exception ex)
@@ -250,11 +233,11 @@ namespace FitHub.Validations
         private void UpdateSpaSlots(DateTime bookingDate, string amenityId, int numberOfPeople)
         {
 
-            using (spaContext)
+            using (gymDbContext)
             { 
                 try
                 {
-                    var spa = spaContext.Spa
+                    var spa = gymDbContext.Spa
                                 .Where(r => r.Date == bookingDate)
                                 .FirstOrDefault();
 
@@ -264,14 +247,14 @@ namespace FitHub.Validations
                     }
                     else
                     {
-                        spaContext.Spa.Add(new Spa
+                        gymDbContext.Spa.Add(new Spa
                         {
                             Date = bookingDate,
                             NumberReserved = numberOfPeople
                         });
                     }
 
-                    spaContext.SaveChanges();
+                    gymDbContext.SaveChanges();
                 }
 
                 catch (Exception ex)
