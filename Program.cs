@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using FitHub.Data;
+using FitHub.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AmenityContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AmenityContext") ?? throw new InvalidOperationException("Connection string 'AmenityContext' not found.")));
@@ -10,6 +12,15 @@ builder.Services.AddDbContext<SpaContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SpaContext") ?? throw new InvalidOperationException("Connection string 'SpaContext' not found.")));
 builder.Services.AddDbContext<SaunaContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SaunaContext") ?? throw new InvalidOperationException("Connection string 'SaunaContext' not found.")));
+
+// Register the SwimmingPool service
+builder.Services.AddScoped<SwimmingPool>();
+
+// Register the Spa service
+builder.Services.AddScoped<Spa>();
+
+// Register the Sauna service
+builder.Services.AddScoped<Sauna>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
