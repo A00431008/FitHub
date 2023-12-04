@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.VisualBasic;
+using System.ComponentModel.DataAnnotations;
 
 namespace FitHub.Validations
 {
@@ -7,8 +9,15 @@ namespace FitHub.Validations
     {
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
-            if (value != null && (DateTime)value > DateTime.Now)
+            if (value != null)
             {
+                if (DateTime.TryParseExact((string?)value, "MM/dd/yyyy", null, System.Globalization.DateTimeStyles.None, out DateTime parsedDate))
+                {
+                    // Extract month, day, and year
+                    int month = parsedDate.Month;
+                    int day = parsedDate.Day;
+                    int year = parsedDate.Year;
+                }
                 return new ValidationResult(ErrorMessage);
             }
             return ValidationResult.Success;
