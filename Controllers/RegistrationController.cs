@@ -58,10 +58,14 @@ namespace FitHub.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserID,Email,FirstName,LastName,PhoneNumber,DOB,Gender,Address,City,Province,Country,PostalCode,Password,ConfirmPassword")] User user)
+        public async Task<IActionResult> Create([Bind("UserID,Email,FirstName,LastName,PhoneNumber,DOB,Gender,Address,City,Province,Country,PostalCode,Password, ConfirmPassword")] User user)
         {
 #pragma warning disable CS8604 // Possible null reference argument.
-            if (_context.User.Any(u => u.Email == user.Email))
+            var existingUser = await _context.User.FirstOrDefaultAsync(
+                u => u.Email == user.Email
+            );
+
+            if (existingUser != null)
             {
                 ModelState.AddModelError("Email", "Email Address Already Exists");
                 return View(user);
@@ -69,6 +73,7 @@ namespace FitHub.Controllers
             if (ModelState.IsValid)
             {
                 user.Password = HashPassword(user.Password);
+                user.ConfirmPassword = HashPassword(user.ConfirmPassword);
                 _context.Add(user);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
