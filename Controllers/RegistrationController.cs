@@ -61,7 +61,7 @@ namespace FitHub.Controllers
         public async Task<IActionResult> Create([Bind("UserID,Email,FirstName,LastName,PhoneNumber,DOB,Gender,Address,City,Province,Country,PostalCode,Password, ConfirmPassword")] User user)
         {
 #pragma warning disable CS8604 // Possible null reference argument.
-            var existingUser = await _context.User.FirstOrDefaultAsync(
+            /*var existingUser = await _context.User.FirstOrDefaultAsync(
                 u => u.Email == user.Email
             );
 
@@ -69,7 +69,7 @@ namespace FitHub.Controllers
             {
                 ModelState.AddModelError("Email", "Email Address Already Exists");
                 return View(user);
-            }
+            }*/
             if (ModelState.IsValid)
             {
                 user.Password = HashPassword(user.Password);

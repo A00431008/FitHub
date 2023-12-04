@@ -8,10 +8,12 @@ namespace FitHub.Validations
     {
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
+            /*string DateOB = value.ToString();
+
             if (value != null && (DateTime)value > DateTime.Now)
             {
                 return new ValidationResult(ErrorMessage);
-            }
+            }*/
             return ValidationResult.Success;
         }
     }
@@ -48,7 +50,7 @@ namespace FitHub.Validations
 
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
-            if (value != null)
+            /*if (value != null)
             {
                 DateTime dob = (DateTime)value;
                 int age = DateTime.Now.Year - dob.Year;
@@ -61,7 +63,7 @@ namespace FitHub.Validations
                 {
                     return new ValidationResult(ErrorMessage);
                 }
-            }
+            }*/
 
             return ValidationResult.Success;
         }
