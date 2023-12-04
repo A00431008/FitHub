@@ -28,7 +28,7 @@ namespace FitHub.Controllers
         }
 
         // GET: Amenities/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null || _context.Amenity == null)
             {
@@ -36,7 +36,7 @@ namespace FitHub.Controllers
             }
 
             var amenity = await _context.Amenity
-                .FirstOrDefaultAsync(m => m.AmenityId == id);
+                .FirstOrDefaultAsync(m => m.AmenityID == id);
             if (amenity == null)
             {
                 return NotFound();
@@ -56,7 +56,7 @@ namespace FitHub.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AmenityId,AmenityName,MaxCapacityPerDay,CostPerPerson")] Amenity amenity)
+        public async Task<IActionResult> Create([Bind("AmenityID,AmenityName,MaxCapacityPerDay,CostPerPerson")] Amenity amenity)
         {
             if (ModelState.IsValid)
             {
@@ -68,7 +68,7 @@ namespace FitHub.Controllers
         }
 
         // GET: Amenities/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null || _context.Amenity == null)
             {
@@ -88,9 +88,9 @@ namespace FitHub.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AmenityId,AmenityName,MaxCapacityPerDay,CostPerPerson")] Amenity amenity)
+        public async Task<IActionResult> Edit(string id, [Bind("AmenityID,AmenityName,MaxCapacityPerDay,CostPerPerson")] Amenity amenity)
         {
-            if (id != amenity.AmenityId)
+            if (id != amenity.AmenityID)
             {
                 return NotFound();
             }
@@ -104,7 +104,7 @@ namespace FitHub.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AmenityExists(amenity.AmenityId))
+                    if (!AmenityExists(amenity.AmenityID))
                     {
                         return NotFound();
                     }
@@ -119,7 +119,7 @@ namespace FitHub.Controllers
         }
 
         // GET: Amenities/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null || _context.Amenity == null)
             {
@@ -127,7 +127,7 @@ namespace FitHub.Controllers
             }
 
             var amenity = await _context.Amenity
-                .FirstOrDefaultAsync(m => m.AmenityId == id);
+                .FirstOrDefaultAsync(m => m.AmenityID == id);
             if (amenity == null)
             {
                 return NotFound();
@@ -139,7 +139,7 @@ namespace FitHub.Controllers
         // POST: Amenities/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
             if (_context.Amenity == null)
             {
@@ -155,9 +155,9 @@ namespace FitHub.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AmenityExists(int id)
+        private bool AmenityExists(string id)
         {
-          return (_context.Amenity?.Any(e => e.AmenityId == id)).GetValueOrDefault();
+          return (_context.Amenity?.Any(e => e.AmenityID == id)).GetValueOrDefault();
         }
     }
 }
