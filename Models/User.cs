@@ -14,12 +14,11 @@ namespace FitHub.Models
 
         [Required(ErrorMessage = "Email is Required")]
         [DisplayName("Email Address")]
-        /*[DataType(DataType.EmailAddress)]*/
         [EmailAddress(ErrorMessage = "Invalid Email Address")]
         public string? Email { get; set; }
 
         [Required(ErrorMessage = "First Name is Required")]
-        [RegularExpression("^[a-zA-Z]+$", ErrorMessage = "Only alphabets are allowed")]
+        [RegularExpression("^[a-zA-Z ]+$", ErrorMessage = "Only alphabets are allowed")]
         [DisplayName("First Name")]
         public string? FirstName { get; set; }
 
@@ -29,28 +28,27 @@ namespace FitHub.Models
         public string? LastName { get; set; }
 
         [Required(ErrorMessage = "Phone Number is Required")]
-        [RegularExpression("^[2-9]\\d{9}$\r\n", ErrorMessage = "Invalid Phone Number")]
-        /*[DataType(DataType.PhoneNumber)]*/
+        [RegularExpression("^[2-9]\\d{9}$", ErrorMessage = "Invalid Phone Number")]
         [DisplayName("Phone Number")]
         public string? PhoneNumber { get; set; }
 
         [Required(ErrorMessage = "Date of Birth is Required")]
         [DisplayName("Date of Birth")]
-        /*[DateNotInFuture(ErrorMessage = "DOB cannot be in Future")]
-        [MinimumAge(16, ErrorMessage = "You must be at least 16 years old")]*/
-        /*[DataType(DataType.Date, ErrorMessage = "Invalid Date Format")]*/
-        public DateTime? DOB { get; set; }
+        [DateNotInFuture(ErrorMessage = "DOB cannot be in Future")]
+        [MinimumAge(16, ErrorMessage = "You must be at least 16 years old")]
+        [DataType(DataType.Date, ErrorMessage = "Invalid Date Format")]
+        public string? DOB { get; set; }
 
         [Required(ErrorMessage = "Gender is Required")]
         public string? Gender { get; set; }
 
         [Required(ErrorMessage = "Street Address is Required")]
         [DisplayName("Street Address")]
-        [RegularExpression("\\d+ \\w+", ErrorMessage = "Invalid Street Address")]
+        [RegularExpression("^\\d+\\s+[A-Za-z]+\\s+[A-Za-z]+$", ErrorMessage = "Invalid Street Address")]
         public string? Address { get; set; }
 
         [Required(ErrorMessage = "City is Required")]
-        [RegularExpression("^[a-zA-Z]+$", ErrorMessage = "Only alphabets are allowed")]
+        [RegularExpression("^[a-zA-Z ]+$", ErrorMessage = "Only alphabets are allowed")]
         [DisplayName("City")]
         public string? City { get; set; }
 
@@ -63,7 +61,7 @@ namespace FitHub.Models
 
         [Required(ErrorMessage = "Postal Code is Required")]
         [DisplayName("Postal/Zip Code")]
-        [RegularExpression(@"^(?!.*[DFIOQUdfioqu])[A-Za-z]\\d[A-Za-z] \\d[A-Za-z]\\d$|^\\d{5}(-\\d{4})?$", 
+        [RegularExpression(@"^[A-Za-z]\d[A-Za-z] \d[A-Za-z]\d|\d{5}(-\d{4})?$", 
             ErrorMessage = "Invalid Postal/Zip Code")]
         public string? PostalCode { get; set; }
 
