@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Xml.Serialization;
 using Microsoft.AspNetCore.Mvc;
+using FitHub.Data;
 
 namespace FitHub.Models
 {
@@ -38,6 +39,7 @@ namespace FitHub.Models
 
         [Required(ErrorMessage = "Number Of People is Required")]
         [Display(Name = "Number Of People")]
+        [CapacityValidation(ErrorMessage = "Enter valid number of people")]
         public int NumberOfPeople { get; set; }
 
         [Required(ErrorMessage = "Amount Paid is Required")]
@@ -64,7 +66,7 @@ namespace FitHub.Models
         [DataType(DataType.Date)]
         [RegularExpression(@"^\d{4}-\d{2}-\d{2}$", ErrorMessage = "Date must be in the format 'YYYY-MM-DD'.")]
         [DateEqualToCurrent(ErrorMessage = "The date must be equal to the current date.")]
-        [Display(Name = "Purchased Date")]
+        [HiddenInput(DisplayValue = false)]
         public DateTime PurchasedDate
         {
             get

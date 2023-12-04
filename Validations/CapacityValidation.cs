@@ -1,6 +1,7 @@
 ﻿//using FitHub.Data;
 using FitHub.Data;
 using FitHub.Models;
+using FitHub.Services;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
@@ -9,6 +10,22 @@ namespace FitHub.Validations
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
     public class CapacityValidation : ValidationAttribute
     {
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            var booking = (Booking)validationContext.ObjectInstance;
+
+            var serviceProvider = validationContext.GetRequiredService<IServiceProvider>();
+            var validationService = serviceProvider.GetRequiredService<CapacityValidationService>();
+
+            if (!validationService.IsBookingValid(booking))
+            {
+                return new ValidationResult(ErrorMessage);
+            }
+
+            return ValidationResult.Success;
+        }
+    }
+    /*{
         private readonly GymDbContext gymDbContext;
         public CapacityValidation(GymDbContext gymContext)
         {
@@ -263,5 +280,5 @@ namespace FitHub.Validations
                 }
             }
         }
-    }
+    }*/
 }
