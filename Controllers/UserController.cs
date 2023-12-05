@@ -24,9 +24,9 @@ namespace FitHub.Controllers
         // GET: User
         public async Task<IActionResult> Index()
         {
-              return _context.User != null ? 
-                          View(await _context.User.ToListAsync()) :
-                          Problem("Entity set 'GymDbContext.User'  is null.");
+            return _context.User != null ?
+                        View(await _context.User.ToListAsync()) :
+                        Problem("Entity set 'GymDbContext.User'  is null.");
         }
 
         // GET: User/Details/5
@@ -97,6 +97,7 @@ namespace FitHub.Controllers
             {
                 return NotFound();
             }
+            user.ConfirmPassword = user.Password;
             return View(user);
         }
 
@@ -112,12 +113,28 @@ namespace FitHub.Controllers
                 return NotFound();
             }
 
+            ModelState.Remove("Password");
+
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(user);
-                    await _context.SaveChangesAsync();
+                    var existingUser = await _context.User.FindAsync(id);
+                    if (existingUser != null)
+                    {
+                        existingUser.FirstName = user.FirstName;
+                        existingUser.LastName = user.LastName;
+                        existingUser.PhoneNumber = user.PhoneNumber;
+                        existingUser.DOB = user.DOB;
+                        existingUser.Gender = user.Gender;
+                        existingUser.Address = user.Address;
+                        existingUser.City = user.City;
+                        existingUser.Province = user.Province;
+                        existingUser.Country = user.Country;
+                        existingUser.PostalCode = user.PostalCode;
+
+                        await _context.SaveChangesAsync();
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -167,14 +184,14 @@ namespace FitHub.Controllers
             {
                 _context.User.Remove(user);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool UserExists(string email)
         {
-          return (_context.User?.Any(e => e.Email == email)).GetValueOrDefault();
+            return (_context.User?.Any(e => e.Email == email)).GetValueOrDefault();
         }
     }
 }
