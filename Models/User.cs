@@ -33,7 +33,7 @@ namespace FitHub.Models
         public string? PhoneNumber { get; set; }
 
         [Required(ErrorMessage = "Date of Birth is Required")]
-        [DisplayName("Date of Birth")]
+        [DisplayName("DOB")]
         [DateNotInFuture(ErrorMessage = "DOB cannot be in Future")]
         [MinimumAge(16, ErrorMessage = "You must be at least 16 years old")]
         [DataType(DataType.Date, ErrorMessage = "Invalid Date Format")]
@@ -71,10 +71,10 @@ namespace FitHub.Models
             ErrorMessage = "Invalid Password")]
         public string? Password { get; set; }
 
-        [Required(ErrorMessage = "Confirm Password is Required")]
         /*[DataType(DataType.Password)]*/
         [Compare("Password", ErrorMessage = "Passwords do not match.")]
         [DisplayName("Confirm Password")]
+        [NotMapped]
         public string? ConfirmPassword { get; set; }
     }
 }
