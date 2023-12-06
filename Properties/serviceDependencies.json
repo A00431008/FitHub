@@ -4,15 +4,6 @@
       "type": "mssql",
       "connectionId": "ConnectionStrings:GymDbContext",
       "dynamicId": null
-    },
-    "mssql2": {
-      "type": "mssql",
-      "connectionId": "ConnectionStrings:MembershipDBContext",
-      "dynamicId": null
-    },
-    "mssql3": {
-      "type": "mssql",
-      "connectionId": "ConnectionStrings:MembDetailDBContext"
     }
   }
 }
