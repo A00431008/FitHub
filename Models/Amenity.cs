@@ -7,7 +7,7 @@ namespace FitHub.Models
         [Key]
         [Required(ErrorMessage = "Amenity Id is Required")]
         [Display(Name = "Amenity Id")]
-        public int AmenityId { get; set; }
+        public string AmenityID { get; set; }
 
         [Required(ErrorMessage = "Amenity Name is Required")]
         [StringLength(50, ErrorMessage = "Amenity Name must be at most 50 characters long")]

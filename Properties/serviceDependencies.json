@@ -1,8 +1,8 @@
 {
   "dependencies": {
-    "mssql1": {
+    "mssql5": {
       "type": "mssql",
-      "connectionId": "ConnectionStrings",
+      "connectionId": "ConnectionStrings:GymDbContext",
       "dynamicId": null
     },
     "mssql2": {

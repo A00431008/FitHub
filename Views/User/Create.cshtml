@@ -1,0 +1,149 @@
+﻿@model FitHub.Models.User
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create an Account</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PhoneNumber" class="control-label"></label>
+                <input asp-for="PhoneNumber" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DOB" class="control-label"></label>
+                <input type="date" asp-for="DOB" class="form-control" />
+                <span asp-validation-for="DOB" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Gender" class="control-label"></label>
+                <select asp-for="Gender" class="form-control">
+                    <option value="" disabled selected>Select</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+                <span asp-validation-for="Gender" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="City" class="control-label"></label>
+                <input asp-for="City" class="form-control" />
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="Country" class="control-label"></label>
+                <select asp-for="Country" class="form-control" id="countryDropdown">
+                    <option value="" disabled selected>Select</option>
+                    <option value="Canada">Canada</option>
+                    <option value="USA">USA</option>
+                </select>
+                <span asp-validation-for="Country" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Province" class="control-label"></label>
+                <select asp-for="Province" class="form-control" id="provinceDropdown" disabled>
+                    <option value="">Select</option>
+                    <!-- Options for provinces/states will be dynamically added using JavaScript -->
+                </select>
+                <span asp-validation-for="Province" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PostalCode" class="control-label"></label>
+                <input asp-for="PostalCode" class="form-control" />
+                <span asp-validation-for="PostalCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ConfirmPassword" class="control-label"></label>
+                <input asp-for="ConfirmPassword" class="form-control" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+
+@section scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        document.getElementById('countryDropdown').addEventListener('change', function () {
+            var countryValue = this.value;
+            var provinceDropdown = document.getElementById('provinceDropdown');
+
+            // Clear existing options
+            provinceDropdown.innerHTML = '<option value="">Select</option>';
+
+            if (countryValue === 'Canada') {
+                // Add Canadian provinces
+                var canadianProvinces = ['Alberta', 'British Columbia', 'Manitoba', 'New Brunswick',
+                'Newfoundland and Labrador', 'Nova Scotia', 'Ontario', 'Prince Edward Island',
+                'Quebec', 'Saskatchewan', 'Northwest Territories', 'Nunavut', 'Yukon'];
+
+                addOptionsToDropdown(provinceDropdown, canadianProvinces);
+            } else if (countryValue === 'USA') {
+                // Add US states
+                var usStates = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 
+                'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho',
+                'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 
+                'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 
+                'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 
+                'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 
+                'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 
+                'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin',
+                'Wyoming'];
+                addOptionsToDropdown(provinceDropdown, usStates);
+            }
+
+            // Enable or disable the province dropdown based on the selected country
+            provinceDropdown.disabled = countryValue === '';
+        });
+
+        function addOptionsToDropdown(dropdown, options) {
+            options.forEach(function (option) {
+                var optionElement = document.createElement('option');
+                optionElement.value = option;
+                optionElement.textContent = option;
+                dropdown.appendChild(optionElement);
+            });
+        }
+    </script>
+}

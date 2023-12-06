@@ -1,10 +1,14 @@
 {
-  "dependencies": {
-    "mssql1": {
+  "dependencies": {    
+    "mssql5": {
       "serviceConnectorResourceId": "",
       "secretStore": "LocalSecretsFile",
       "type": "mssql.onprem",
+<<<<<<< HEAD
       "connectionId": "ConnectionStrings",
+=======
+      "connectionId": "ConnectionStrings:GymDbContext",
+>>>>>>> main
       "dynamicId": null
     },
     "mssql2": {
