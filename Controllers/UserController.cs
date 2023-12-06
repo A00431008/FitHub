@@ -12,24 +12,24 @@ using Microsoft.AspNetCore.Identity;
 
 namespace FitHub.Controllers
 {
-    public class RegistrationController : Controller
+    public class UserController : Controller
     {
         private readonly GymDbContext _context;
 
-        public RegistrationController(GymDbContext context)
+        public UserController(GymDbContext context)
         {
             _context = context;
         }
 
-        // GET: Registration
+        // GET: User
         public async Task<IActionResult> Index()
         {
-              return _context.User != null ? 
-                          View(await _context.User.ToListAsync()) :
-                          Problem("Entity set 'GymDbContext.User'  is null.");
+            return _context.User != null ?
+                        View(await _context.User.ToListAsync()) :
+                        Problem("Entity set 'GymDbContext.User'  is null.");
         }
 
-        // GET: Registration/Details/5
+        // GET: User/Details/5
         public async Task<IActionResult> Details(string id)
         {
             if (id == null || _context.User == null)
@@ -47,33 +47,28 @@ namespace FitHub.Controllers
             return View(user);
         }
 
-        // GET: Registration/Create
+        // GET: User/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Registration/Create
+        // POST: User/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserID,Email,FirstName,LastName,PhoneNumber,DOB,Gender,Address,City,Province,Country,PostalCode,Password, ConfirmPassword")] User user)
+        public async Task<IActionResult> Create([Bind("UserID,Email,FirstName,LastName,PhoneNumber,DOB,Gender,Address,City,Province,Country,PostalCode,Password,ConfirmPassword")] User user)
         {
 #pragma warning disable CS8604 // Possible null reference argument.
-            var existingUser = await _context.User.FirstOrDefaultAsync(
-                u => u.Email == user.Email
-            );
-
-            if (existingUser != null)
+            if (UserExists(user.Email))
             {
-                ModelState.AddModelError("Email", "Email Address Already Exists");
+                ModelState.AddModelError("Email", "Email Address already Exists");
                 return View(user);
             }
             if (ModelState.IsValid)
             {
                 user.Password = HashPassword(user.Password);
-                user.ConfirmPassword = HashPassword(user.ConfirmPassword);
                 _context.Add(user);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -86,9 +81,10 @@ namespace FitHub.Controllers
             var pwHasher = new PasswordHasher<User>();
             return pwHasher.HashPassword(null, password);
         }
+
 #pragma warning restore CS8604 // Possible null reference argument.
 
-        // GET: Registration/Edit/5
+        // GET: User/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null || _context.User == null)
@@ -101,10 +97,11 @@ namespace FitHub.Controllers
             {
                 return NotFound();
             }
+            user.ConfirmPassword = user.Password;
             return View(user);
         }
 
-        // POST: Registration/Edit/5
+        // POST: User/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -116,12 +113,28 @@ namespace FitHub.Controllers
                 return NotFound();
             }
 
+            ModelState.Remove("Password");
+
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(user);
-                    await _context.SaveChangesAsync();
+                    var existingUser = await _context.User.FindAsync(id);
+                    if (existingUser != null)
+                    {
+                        existingUser.FirstName = user.FirstName;
+                        existingUser.LastName = user.LastName;
+                        existingUser.PhoneNumber = user.PhoneNumber;
+                        existingUser.DOB = user.DOB;
+                        existingUser.Gender = user.Gender;
+                        existingUser.Address = user.Address;
+                        existingUser.City = user.City;
+                        existingUser.Province = user.Province;
+                        existingUser.Country = user.Country;
+                        existingUser.PostalCode = user.PostalCode;
+
+                        await _context.SaveChangesAsync();
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -139,7 +152,7 @@ namespace FitHub.Controllers
             return View(user);
         }
 
-        // GET: Registration/Delete/5
+        // GET: User/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null || _context.User == null)
@@ -157,7 +170,7 @@ namespace FitHub.Controllers
             return View(user);
         }
 
-        // POST: Registration/Delete/5
+        // POST: User/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
@@ -171,14 +184,14 @@ namespace FitHub.Controllers
             {
                 _context.User.Remove(user);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UserExists(string id)
+        private bool UserExists(string email)
         {
-          return (_context.User?.Any(e => e.UserID == id)).GetValueOrDefault();
+            return (_context.User?.Any(e => e.Email == email)).GetValueOrDefault();
         }
     }
 }
