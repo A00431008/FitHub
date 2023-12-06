@@ -3,6 +3,8 @@ using System.Runtime.CompilerServices;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using FitHub.Validations;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace FitHub.Models
 {
@@ -10,13 +12,25 @@ namespace FitHub.Models
     {
         private decimal _AmountPaid;
         private DateTime _EndDate;
+        private string _MembType;
+
 
         [Key]
+        [HiddenInput(DisplayValue = true)]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string MembershipID { get; set; }
 
         [ForeignKey("User")]
+        [HiddenInput(DisplayValue = true)]
         public string UserID { get; set; }
+
+        [Required]
+        public string MembershipType
+        {
+            get => _MembType;
+            set => _MembType = MD.MembershipTypeName;
+        }
+        //public List<SelectListItem> MembershipTypes { get; set; }
 
         [Required]
         [RegularExpression(@"^\d{4}-\d{2}-\d{2}$", 
@@ -28,6 +42,7 @@ namespace FitHub.Models
         public DateTime StartDate { get; set; }
 
         [Required]
+        [HiddenInput(DisplayValue = true)]
         [Display(Name = "End Date"), DataType(DataType.Date)]
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime EndDate
@@ -77,6 +92,7 @@ namespace FitHub.Models
         //}
 
         [ForeignKey("MD")]
+        [HiddenInput(DisplayValue = true)]
         public string MembershipTypeID { get; set; }
 
         public virtual MembershipDetail MD { get; set; }

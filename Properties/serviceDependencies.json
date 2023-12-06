@@ -4,6 +4,15 @@
       "type": "mssql",
       "connectionId": "ConnectionStrings",
       "dynamicId": null
+    },
+    "mssql2": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:MembershipDBContext",
+      "dynamicId": null
+    },
+    "mssql3": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:MembDetailDBContext"
     }
   }
 }
