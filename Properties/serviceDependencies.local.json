@@ -1,5 +1,5 @@
 {
-  "dependencies": {    
+  "dependencies": {
     "mssql5": {
       "serviceConnectorResourceId": "",
       "secretStore": "LocalSecretsFile",
