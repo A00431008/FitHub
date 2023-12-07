@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FitHub.Migrations
 {
 //<<<<<<<< HEAD:Migrations/20231207003730_InitialMigration.cs
-    //public partial class InitialMigration : Migration
+   // public partial class InitialMigration : Migration
 //========
     public partial class intitial_create : Migration
 //>>>>>>>> main:Migrations/20231207024120_intitial_create.cs
@@ -139,10 +139,10 @@ namespace FitHub.Migrations
                 {
                     MembershipID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     UserID = table.Column<string>(type: "nvarchar(450)", nullable: false),
-//<<<<<<<< HEAD:Migrations/20231207003730_InitialMigration.cs
+<<<<<<<< HEAD:Migrations/20231207003730_InitialMigration.cs
                     MembershipType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-//========
-//>>>>>>>> main:Migrations/20231207024120_intitial_create.cs
+========
+>>>>>>>> main:Migrations/20231207024120_intitial_create.cs
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AmountPaid = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
