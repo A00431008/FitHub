@@ -9,6 +9,11 @@ using FitHub.Data;
 using FitHub.Models;
 using System.Drawing.Text;
 using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using System.Text;
+using System.Security.Cryptography;
 
 namespace FitHub.Controllers
 {
@@ -20,6 +25,7 @@ namespace FitHub.Controllers
         {
             _context = context;
         }
+
 
         // GET: User
         public async Task<IActionResult> Index()
@@ -76,11 +82,7 @@ namespace FitHub.Controllers
             return View(user);
         }
 
-        private string HashPassword(string password)
-        {
-            var pwHasher = new PasswordHasher<User>();
-            return pwHasher.HashPassword(null, password);
-        }
+        
 
 #pragma warning restore CS8604 // Possible null reference argument.
 
@@ -192,6 +194,23 @@ namespace FitHub.Controllers
         private bool UserExists(string email)
         {
             return (_context.User?.Any(e => e.Email == email)).GetValueOrDefault();
+        }
+
+        private string HashPassword(string password)
+        {
+            using (var sha256 = SHA256.Create())
+            {
+                byte[] hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+
+                // Convert the byte array to a hexadecimal string
+                StringBuilder stringBuilder = new StringBuilder();
+                foreach (byte b in hashedBytes)
+                {
+                    stringBuilder.Append(b.ToString("x2"));
+                }
+
+                return stringBuilder.ToString();
+            }
         }
     }
 }

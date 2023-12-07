@@ -25,5 +25,7 @@ namespace FitHub.Data
         public DbSet<FitHub.Models.Booking>? Booking { get; set; }
 
         public DbSet<FitHub.Models.User>? User { get; set; }
+
+        public DbSet<FitHub.Models.Login>? Login { get; set; }
     }
 }
