@@ -66,12 +66,12 @@ namespace FitHub.Models
         public string? PostalCode { get; set; }
 
         [Required(ErrorMessage = "Password is Required")]
-        /*[DataType(DataType.Password)]*/
+        [DataType(DataType.Password)]
         [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$", 
             ErrorMessage = "Invalid Password")]
         public string? Password { get; set; }
 
-        /*[DataType(DataType.Password)]*/
+        [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "Passwords do not match.")]
         [DisplayName("Confirm Password")]
         [NotMapped]
