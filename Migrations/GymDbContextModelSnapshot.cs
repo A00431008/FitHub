@@ -54,7 +54,6 @@ namespace FitHub.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("AmountPaid")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("BookingDate")
@@ -65,10 +64,6 @@ namespace FitHub.Migrations
 
                     b.Property<DateTime>("PurchasedDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("SlotNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserID")
                         .IsRequired()
@@ -81,6 +76,66 @@ namespace FitHub.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("Booking");
+                });
+
+            modelBuilder.Entity("FitHub.Models.Membership", b =>
+                {
+                    b.Property<string>("MembershipID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal>("AmountPaid")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("EndDate")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("MembershipTypeID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("MembershipID");
+
+                    b.HasIndex("MembershipTypeID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("Membership");
+                });
+
+            modelBuilder.Entity("FitHub.Models.MembershipDetail", b =>
+                {
+                    b.Property<string>("MembershipTypeID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal>("Cost")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DurationMonths")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MembershipTypeName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("MembershipTypeID");
+
+                    b.ToTable("MembershipDetail");
                 });
 
             modelBuilder.Entity("FitHub.Models.Sauna", b =>
@@ -145,10 +200,6 @@ namespace FitHub.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ConfirmPassword")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Country")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -209,6 +260,25 @@ namespace FitHub.Migrations
                         .IsRequired();
 
                     b.Navigation("Amenity");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("FitHub.Models.Membership", b =>
+                {
+                    b.HasOne("FitHub.Models.MembershipDetail", "MD")
+                        .WithMany()
+                        .HasForeignKey("MembershipTypeID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FitHub.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MD");
 
                     b.Navigation("User");
                 });
