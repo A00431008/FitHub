@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FitHub.Data;
 using FitHub.Models;
+using FitHub.Services;
 
 namespace FitHub.Controllers
 {
     public class BookingsController : Controller
     {
         private readonly GymDbContext _context;
+        private readonly AmenityManagementService _amenityManagementService;
 
-        public BookingsController(GymDbContext context)
+        public BookingsController(GymDbContext context, AmenityManagementService amenityManagementService)
         {
             _context = context;
+            _amenityManagementService = amenityManagementService;
         }
 
         // GET: Bookings
@@ -49,8 +52,8 @@ namespace FitHub.Controllers
         // GET: Bookings/Create
         public IActionResult Create()
         {
-            ViewData["AmenityID"] = new SelectList(_context.Amenity, "AmenityID", "AmenityID");
-            ViewData["UserID"] = new SelectList(_context.Set<User>(), "UserID", "UserID");
+            ViewData["AmenityID"] = new SelectList(_context.Amenity, "AmenityID", "AmenityName");
+            ViewData["UserID"] = new SelectList(_context.User, "UserID", "UserID");
             return View();
         }
 
@@ -59,16 +62,42 @@ namespace FitHub.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BookingID,UserID,AmenityID,BookingDate,SlotNumber,NumberOfPeople,AmountPaid,PurchasedDate")] Booking booking)
+        public async Task<IActionResult> Create([Bind("BookingID,UserID,AmenityID,BookingDate,NumberOfPeople,AmountPaid,PurchasedDate")] Booking booking)
         {
+            string userId = booking.UserID;
+            string amenityId = booking.AmenityID;
+
+            var user = await _context.User.FindAsync(userId);
+            var amenity = await _context.Amenity.FindAsync(amenityId);
+
+            booking.User = user;
+            booking.Amenity = amenity;
+            booking.AmountPaid = booking.NumberOfPeople * amenity.CostPerPerson;
+            booking.PurchasedDate = DateTime.Now;
+
+            if (booking.NumberOfPeople <= 0)
+            {
+                ModelState.AddModelError(nameof(Booking.NumberOfPeople), "Number of people must be greater than zero.");
+            }
+
+            else if (!_amenityManagementService.IsBookingValid(booking))
+            {
+                ModelState.AddModelError(nameof(Booking.NumberOfPeople), "Booking is not valid based on capacity constraints.");
+            }
+
+            ModelState.Remove("BookingID");
+            ModelState.Remove("User");
+            ModelState.Remove("Amenity");
+
             if (ModelState.IsValid)
             {
                 _context.Add(booking);
                 await _context.SaveChangesAsync();
+                _amenityManagementService.UpdateAmenityCapacity(booking);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AmenityID"] = new SelectList(_context.Amenity, "AmenityID", "AmenityID", booking.AmenityID);
-            ViewData["UserID"] = new SelectList(_context.Set<User>(), "UserID", "UserID", booking.UserID);
+            ViewData["AmenityID"] = new SelectList(_context.Amenity, "AmenityID", "AmenityName", booking.AmenityID);
+            ViewData["UserID"] = new SelectList(_context.User, "UserID", "UserID", booking.UserID);
             return View(booking);
         }
 
@@ -85,8 +114,8 @@ namespace FitHub.Controllers
             {
                 return NotFound();
             }
-            ViewData["AmenityID"] = new SelectList(_context.Amenity, "AmenityID", "AmenityID", booking.AmenityID);
-            ViewData["UserID"] = new SelectList(_context.Set<User>(), "UserID", "UserID", booking.UserID);
+            ViewData["AmenityID"] = new SelectList(_context.Amenity, "AmenityID", "AmenityName", booking.AmenityID);
+            ViewData["UserID"] = new SelectList(_context.User, "UserID", "UserID", booking.UserID);
             return View(booking);
         }
 
@@ -95,7 +124,7 @@ namespace FitHub.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("BookingID,UserID,AmenityID,BookingDate,SlotNumber,NumberOfPeople,AmountPaid,PurchasedDate")] Booking booking)
+        public async Task<IActionResult> Edit(string id, [Bind("BookingID,UserID,AmenityID,BookingDate,NumberOfPeople,AmountPaid,PurchasedDate")] Booking booking)
         {
             if (id != booking.BookingID)
             {
@@ -122,8 +151,8 @@ namespace FitHub.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AmenityID"] = new SelectList(_context.Amenity, "AmenityID", "AmenityID", booking.AmenityID);
-            ViewData["UserID"] = new SelectList(_context.Set<User>(), "UserID", "UserID", booking.UserID);
+            ViewData["AmenityID"] = new SelectList(_context.Amenity, "AmenityID", "AmenityName", booking.AmenityID);
+            ViewData["UserID"] = new SelectList(_context.User, "UserID", "UserID", booking.UserID);
             return View(booking);
         }
 

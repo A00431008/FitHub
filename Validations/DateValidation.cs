@@ -23,10 +23,12 @@ namespace FitHub.Validations
     {
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
-
-            if (value != null && (DateTime)value < DateTime.Now)
+           if (value is DateTime date)
             {
-                return new ValidationResult(ErrorMessage);
+                if (date < DateTime.Now.Date)
+                {
+                    return new ValidationResult(ErrorMessage);
+                }
             }
             return ValidationResult.Success;
         }
@@ -36,7 +38,9 @@ namespace FitHub.Validations
     {
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
-            if (value != null && (DateTime)value != DateTime.Now)
+            string? dob = value.ToString();
+            DateTime date = DateTime.Parse(dob);
+            if (value != null && date != DateTime.Now)
             {
                 return new ValidationResult(ErrorMessage);
             }

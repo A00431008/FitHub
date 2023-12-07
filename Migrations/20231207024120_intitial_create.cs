@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FitHub.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class intitial_create : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -21,6 +21,21 @@ namespace FitHub.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Amenity", x => x.AmenityID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MembershipDetail",
+                columns: table => new
+                {
+                    MembershipTypeID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    MembershipTypeName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    DurationMonths = table.Column<int>(type: "int", nullable: false),
+                    Cost = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MembershipDetail", x => x.MembershipTypeID);
                 });
 
             migrationBuilder.CreateTable(
@@ -78,8 +93,7 @@ namespace FitHub.Migrations
                     Province = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ConfirmPassword = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -94,7 +108,6 @@ namespace FitHub.Migrations
                     UserID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     AmenityID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     BookingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    SlotNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     NumberOfPeople = table.Column<int>(type: "int", nullable: false),
                     AmountPaid = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     PurchasedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -116,6 +129,34 @@ namespace FitHub.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Membership",
+                columns: table => new
+                {
+                    MembershipID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AmountPaid = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    MembershipTypeID = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Membership", x => x.MembershipID);
+                    table.ForeignKey(
+                        name: "FK_Membership_MembershipDetail_MembershipTypeID",
+                        column: x => x.MembershipTypeID,
+                        principalTable: "MembershipDetail",
+                        principalColumn: "MembershipTypeID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Membership_User_UserID",
+                        column: x => x.UserID,
+                        principalTable: "User",
+                        principalColumn: "UserID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Booking_AmenityID",
                 table: "Booking",
@@ -125,12 +166,25 @@ namespace FitHub.Migrations
                 name: "IX_Booking_UserID",
                 table: "Booking",
                 column: "UserID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Membership_MembershipTypeID",
+                table: "Membership",
+                column: "MembershipTypeID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Membership_UserID",
+                table: "Membership",
+                column: "UserID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "Booking");
+
+            migrationBuilder.DropTable(
+                name: "Membership");
 
             migrationBuilder.DropTable(
                 name: "Sauna");
@@ -143,6 +197,9 @@ namespace FitHub.Migrations
 
             migrationBuilder.DropTable(
                 name: "Amenity");
+
+            migrationBuilder.DropTable(
+                name: "MembershipDetail");
 
             migrationBuilder.DropTable(
                 name: "User");

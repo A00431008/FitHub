@@ -1,97 +1,70 @@
-﻿//using FitHub.Data;
-using FitHub.Data;
+﻿using FitHub.Data;
 using FitHub.Models;
-using FitHub.Services;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 using System.ComponentModel.DataAnnotations;
 
-namespace FitHub.Validations
+namespace FitHub.Services
 {
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
-    public class CapacityValidation : ValidationAttribute
+    public class AmenityManagementService
     {
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
-        {
-            var booking = (Booking)validationContext.ObjectInstance;
-
-            var serviceProvider = validationContext.GetRequiredService<IServiceProvider>();
-            var validationService = serviceProvider.GetRequiredService<CapacityValidationService>();
-
-            if (!validationService.IsBookingValid(booking))
-            {
-                return new ValidationResult(ErrorMessage);
-            }
-
-            return ValidationResult.Success;
-        }
-    }
-    /*{
         private readonly GymDbContext gymDbContext;
-        public CapacityValidation(GymDbContext gymContext)
+
+        public AmenityManagementService(GymDbContext gymDbContext)
         {
-            this.gymDbContext = gymContext;
+            this.gymDbContext = gymDbContext;
         }
 
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        public bool IsBookingValid(Booking booking)
         {
-            var booking = (Booking)validationContext.ObjectInstance;
-            booking = GetMaxCapacityPerDay(booking);
 
             DateTime bookingDate = booking.BookingDate;
             string amenityId = booking.AmenityID;
-            int numberOfPeople = (int)value;
+            int numberOfPeople = booking.NumberOfPeople;
             int numberReserved = 0;
 
             if (amenityId == "1")
             {
                 numberReserved = GetSwimmingPoolNumberReserved(bookingDate, amenityId);
             }
-            else if (amenityId == "2")
+            /*else if (amenityId == "2")
             {
                 numberReserved = GetSaunaNumberReserved(bookingDate, amenityId);
             }
             else
             {
                 numberReserved = GetSpaNumberReserved(bookingDate, amenityId);
-            }
+            }*/
 
-            int maxCapacityPerDay = 0;
-
-            if (booking != null && booking.Amenity != null)
-            {
-                maxCapacityPerDay = booking.Amenity.MaxCapacityPerDay;
-            }
-
+            int maxCapacityPerDay = GetMaxCapacityPerDay(amenityId);
 
             if ((numberOfPeople + numberReserved) > maxCapacityPerDay)
             {
-                return new ValidationResult(ErrorMessage);
+                return false;
             }
 
+            return true;
+        }
+
+        public void UpdateAmenityCapacity(Booking booking)
+        {
+            string amenityId = booking.AmenityID;
+            int numberOfPeople = booking.NumberOfPeople;
+            DateTime bookingDate = booking.BookingDate;
 
             if (amenityId == "1")
             {
-                UpdateSwimmingPoolSlots(bookingDate, amenityId, numberOfPeople);
+                UpdateSwimmingPoolSlots(bookingDate, numberOfPeople);
             }
-            else if (amenityId == "2")
-            {
-                UpdateSaunaSlots(bookingDate, amenityId, numberOfPeople);
-            }
-            else
-            {
-                UpdateSpaSlots(bookingDate, amenityId, numberOfPeople);
-            }
-
-            return ValidationResult.Success;
         }
 
         private int GetSwimmingPoolNumberReserved(DateTime date, string amenityId)
         {
-            using (gymDbContext)
-            {
+            int numberReserved = 0;
+            //using (gymDbContext)
+            //{
                 try
                 {
-                    int numberReserved = 0;
                     var swimmingPool = gymDbContext.SwimmingPool
                                     .Where(r => r.Date == date)
                                     .FirstOrDefault();
@@ -106,17 +79,17 @@ namespace FitHub.Validations
                     Console.WriteLine($"Error retrieving NumberReserved for swimming pool: {ex.Message}");
                     return 0;
                 }
-            }
-            return 0;
+            //}
+            return numberReserved;
         }
 
-        private int GetSaunaNumberReserved(DateTime date, string amenityId)
+        /*private int GetSaunaNumberReserved(DateTime date, string amenityId)
         {
+            int numberReserved = 0;
             using (gymDbContext)
-            { 
+            {
                 try
                 {
-                    int numberReserved = 0;
                     var sauna = gymDbContext.Sauna
                                 .Where(r => r.Date == date)
                                 .FirstOrDefault();
@@ -132,16 +105,16 @@ namespace FitHub.Validations
                     return 0;
                 }
             }
-            return 0;
+            return numberReserved;
         }
 
         private int GetSpaNumberReserved(DateTime date, string amenityId)
         {
+            int numberReserved = 0;
             using (gymDbContext)
             {
                 try
                 {
-                    int numberReserved = 0;
                     var spa = gymDbContext.Spa
                                 .Where(r => r.Date == date)
                                 .FirstOrDefault();
@@ -158,33 +131,38 @@ namespace FitHub.Validations
                 }
             }
 
-            return 0;
-        }
+            return numberReserved;
+        }*/
 
-        private Booking GetMaxCapacityPerDay(Booking booking)
+        private int GetMaxCapacityPerDay(string amenityId)
         {
-            using (gymDbContext)
-            {
+            int maxCapacityPerDay = 0;
+            //using (gymDbContext)
+            //{
                 try
                 {
-                    booking = gymDbContext.Booking
-                        .Include(b => b.Amenity) 
-                        .Where(b => b.BookingID == booking.BookingID)
+                    var amenity = gymDbContext.Amenity
+                        .Where(r => r.AmenityID == amenityId)
                         .FirstOrDefault();
+
+                    if (amenity != null)
+                    {
+                        maxCapacityPerDay = amenity.MaxCapacityPerDay; 
+                    }
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Error loading Amenity: {ex.Message}");
                 }
-            }
+            //}
 
-            return booking;
+            return maxCapacityPerDay;
         }
 
-        private void UpdateSwimmingPoolSlots(DateTime bookingDate, string amenityId, int numberOfPeople)
+        private void UpdateSwimmingPoolSlots(DateTime bookingDate, int numberOfPeople)
         {
-            using (gymDbContext)
-            {
+            //using (gymDbContext)
+            //{
                 try
                 {
                     var swimmingPool = gymDbContext.SwimmingPool
@@ -200,7 +178,8 @@ namespace FitHub.Validations
                         gymDbContext.SwimmingPool.Add(new SwimmingPool
                         {
                             Date = bookingDate,
-                            NumberReserved = numberOfPeople
+                            NumberReserved = numberOfPeople,
+                            AmenityId = 1
                         });
                     }
 
@@ -211,10 +190,10 @@ namespace FitHub.Validations
                 {
                     Console.WriteLine($"Error updating NumberReserved for swimming pool: {ex.Message}");
                 }
-            }
+            //}
         }
 
-        private void UpdateSaunaSlots(DateTime bookingDate, string amenityId, int numberOfPeople)
+        /*private void UpdateSaunaSlots(DateTime bookingDate, string amenityId, int numberOfPeople)
         {
             using (gymDbContext)
             {
@@ -251,7 +230,7 @@ namespace FitHub.Validations
         {
 
             using (gymDbContext)
-            { 
+            {
                 try
                 {
                     var spa = gymDbContext.Spa
@@ -278,7 +257,6 @@ namespace FitHub.Validations
                 {
                     Console.WriteLine($"Error updating NumberReserved for spa: {ex.Message}");
                 }
-            }
+            }*/
         }
-    }*/
-}
+    }

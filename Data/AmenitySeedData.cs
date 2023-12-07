@@ -1,8 +1,8 @@
-﻿using FitHub.Data;
+﻿using FitHub.Models;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
-namespace FitHub.Models
+namespace FitHub.Data
 {
     public class AmenitySeedData
     {
