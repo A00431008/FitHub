@@ -17,7 +17,7 @@ namespace FitHub.Models
 
         [Key]
         [HiddenInput(DisplayValue = true)]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string MembershipID { get; set; }
 
         [ForeignKey("User")]
@@ -25,16 +25,11 @@ namespace FitHub.Models
         public string UserID { get; set; }
 
         [Required]
-        public string MembershipType
-        {
-            get => _MembType;
-            set => _MembType = MD.MembershipTypeName;
-        }
-        //public List<SelectListItem> MembershipTypes { get; set; }
+        public string MembershipType { get; set; }
 
         [Required]
-        [RegularExpression(@"^\d{4}-\d{2}-\d{2}$", 
-            ErrorMessage = "Date must be in the format 'YYYY-MM-DD'.")]
+        //[RegularExpression(@"^\d{4}-\d{2}-\d{2}$", 
+          //  ErrorMessage = "Date must be in the format 'YYYY-MM-DD'.")]
         [DateNotInPastAttribute(ErrorMessage = 
             "The date must be greater than or equal to the current date.")]
         [Display(Name = "Start Date")]
@@ -44,12 +39,9 @@ namespace FitHub.Models
         [Required]
         [HiddenInput(DisplayValue = true)]
         [Display(Name = "End Date"), DataType(DataType.Date)]
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public DateTime EndDate
-        {
-            get => _EndDate;
-            set => _EndDate = StartDate.AddMonths(MD.DurationMonths);
-        }
+        //[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public DateTime EndDate { get; set; }
+        
         //public DateTime EndDate
         //{
         //    get
@@ -70,12 +62,8 @@ namespace FitHub.Models
         [Required/*(ErrorMessage = "Amount Paid is Required")*/]
         [DataType(DataType.Currency)]
         [Display(Name = "Amount Paid")]
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public decimal AmountPaid
-        {
-            get => _AmountPaid;
-            set => _AmountPaid = MD.Cost;
-        }
+        /*[DatabaseGenerated(DatabaseGeneratedOption.Computed)]*/
+        public decimal AmountPaid { get; set; }
         //public decimal AmountPaid
         //{
         //    get

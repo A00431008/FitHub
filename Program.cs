@@ -1,13 +1,3 @@
-<<<<<<< HEAD
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using FitHub.Data;
-var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<MembDetailDBContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("MembDetailDBContext") ?? throw new InvalidOperationException("Connection string 'MembDetailDBContext' not found.")));
-builder.Services.AddDbContext<MembershipDBContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("MembershipDBContext") ?? throw new InvalidOperationException("Connection string 'MembershipDBContext' not found.")));
-=======
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using FitHub.Models;
@@ -16,7 +6,6 @@ using FitHub.Data;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<GymDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("GymDbContext") ?? throw new InvalidOperationException("Connection string 'GymDbContext' not found.")));
->>>>>>> main
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
