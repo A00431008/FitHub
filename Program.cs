@@ -23,6 +23,7 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
 
     AmenitySeedData.Initialize(services);
+    MembershipDetailSeedData.Initialize(services);
 }
 
 // Configure the HTTP request pipeline.

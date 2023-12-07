@@ -27,10 +27,6 @@ namespace FitHub.Data
         public DbSet<FitHub.Models.User>? User { get; set; }
 
         public DbSet<FitHub.Models.Membership>? Membership { get; set; }
-<<<<<<< HEAD
-
-=======
->>>>>>> main
         public DbSet<FitHub.Models.MembershipDetail>? MembershipDetail { get; set; }
     }
 }

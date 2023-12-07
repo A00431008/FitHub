@@ -92,13 +92,10 @@ namespace FitHub.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
-<<<<<<< HEAD
                     b.Property<string>("MembershipType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-=======
->>>>>>> main
                     b.Property<string>("MembershipTypeID")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
