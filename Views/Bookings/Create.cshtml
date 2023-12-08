@@ -4,18 +4,15 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Book an Amenity</h1>
 
-<h4>Booking</h4>
+<h5>Please select an amenity from the dropdown list, 
+    choose a date and choose how many people you would like to book it for</h5>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="UserID" class="control-label"></label>
-                <select asp-for="UserID" class ="form-control" asp-items="ViewBag.UserID"></select>
-            </div>
             <div class="form-group">
                 <label asp-for="AmenityID" class="control-label"></label>
                 <select asp-for="AmenityID" class ="form-control" asp-items="ViewBag.AmenityID"></select>
@@ -27,21 +24,16 @@
             </div>
             <div class="form-group">
                 <label asp-for="NumberOfPeople" class="control-label"></label>
-                <input asp-for="NumberOfPeople" class="form-control" />
+                <input asp-for="NumberOfPeople" class="form-control" type="number"/>
                 <span asp-validation-for="NumberOfPeople" class="text-danger"></span>
             </div>
-            @* <div class="form-group">
-                <label asp-for="AmountPaid" class="control-label"></label>
-                <input asp-for="AmountPaid" class="form-control" />
-                <span asp-validation-for="AmountPaid" class="text-danger"></span>
+            <div class="form-group">
+                <label class="control-label">Amount Due</label>
+                <input asp-for="AmountPaid "class="form-control" readonly/>
             </div>
+            
             <div class="form-group">
-                <label asp-for="PurchasedDate" class="control-label"></label>
-                <input asp-for="PurchasedDate" class="form-control" />
-                <span asp-validation-for="PurchasedDate" class="text-danger"></span>
-            </div> *@
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Proceed to Payment" class="btn btn-primary" />
             </div>
         </form>
     </div>
@@ -53,4 +45,26 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        function updateAmount() {
+            var data = @Html.Raw(Json.Serialize(ViewBag.Rates));
+            console.log(data);
+            var amenityName = $('#AmenityID').val();
+            console.log("AmenityName: " + amenityName);
+            var numOfPeople = parseInt($('#NumberOfPeople').val()) || 0;
+            console.log("numOfPeople: " + numOfPeople);
+            if (data) {
+                var amount = data[amenityName] * numOfPeople;
+                console.log(amount)
+                $("#AmountPaid").val(amount);
+            } else {
+                $("#AmountPaid").val('');
+            }
+        }
+
+        $("#AmenityID, #NumberOfPeople").on('input', updateAmount);
+        $("#UserID").ready(function () { });
+        updateAmount();
+    </script>
+
 }

@@ -12,15 +12,15 @@ namespace FitHub.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string BookingID { get; set; }
+        public string? BookingID { get; set; }
 
         [ForeignKey("User")]
         [Display(Name = "User Id")]
-        public string UserID { get; set; }
+        public string? UserID { get; set; }
 
         [ForeignKey("Amenity")]
         [Display(Name = "Amenity Id")]
-        public string AmenityID { get; set; }
+        public string? AmenityID { get; set; }
 
         [Required(ErrorMessage = "Booking Date is Required")]
         [DataType(DataType.Date, ErrorMessage = "Invalid Date Format")]
@@ -40,8 +40,8 @@ namespace FitHub.Models
         [Display(Name = "Purchased Date")]
         public DateTime PurchasedDate { get; set; }
 
-        public virtual User User { get; set; }
-        public virtual Amenity Amenity { get; set; }
+        public virtual User? User { get; set; }
+        public virtual Amenity? Amenity { get; set; }
     }
 }
 

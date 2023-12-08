@@ -56,7 +56,7 @@ namespace FitHub.Controllers
                 };
 
                 var claims = new List<Claim> { 
-                    new Claim("UserID", login.Email),
+                    new Claim("UserID", user.UserID),
                 };
 
                 var claimsIdentity = new ClaimsIdentity(claims, 
