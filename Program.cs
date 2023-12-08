@@ -10,6 +10,7 @@ builder.Services.AddDbContext<GymDbContext>(options =>
 
 // Register the capacity validation service
 builder.Services.AddScoped<AmenityManagementService>();
+builder.Services.AddScoped<MembershipManagementService>();
 
 // Register the gym service
 builder.Services.AddScoped<GymDbContext>();
@@ -33,6 +34,7 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
 
     AmenitySeedData.Initialize(services);
+    MembershipDetailSeedData.Initialize(services);
 }
 
 // Configure the HTTP request pipeline.

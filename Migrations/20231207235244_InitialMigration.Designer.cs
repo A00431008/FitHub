@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FitHub.Migrations
 {
     [DbContext(typeof(GymDbContext))]
-    [Migration("20231207024120_intitial_create")]
-    partial class intitial_create
+    [Migration("20231207235244_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -87,11 +87,9 @@ namespace FitHub.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("AmountPaid")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("EndDate")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("MembershipTypeID")
@@ -117,7 +115,6 @@ namespace FitHub.Migrations
             modelBuilder.Entity("FitHub.Models.MembershipDetail", b =>
                 {
                     b.Property<string>("MembershipTypeID")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("Cost")
