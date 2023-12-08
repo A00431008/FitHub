@@ -11,18 +11,20 @@ namespace FitHub.Models
     public class Membership
     {
         [Key]
+        [Required]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string MembershipID { get; set; }
 
         [ForeignKey("User")]
         [HiddenInput(DisplayValue = true)]
         public string UserID { get; set; }
+
+        [ForeignKey("MD")]
         [Display(Name = "Membership Type")]
         [Required]
-        public string MembershipType { get; set; }
+        public string MembershipTypeID { get; set; }
 
         [Required]
-        //[RegularExpression(@"^\d{4}-\d{2}-\d{2}$", 
-          //  ErrorMessage = "Date must be in the format 'YYYY-MM-DD'.")]
         [DateNotInPastAttribute(ErrorMessage = 
             "The date must be greater than or equal to the current date.")]
         [Display(Name = "Start Date")]
@@ -38,10 +40,6 @@ namespace FitHub.Models
         [Display(Name = "Amount Paid")]
         public decimal AmountPaid { get; set; }
         
-
-        [ForeignKey("MD")]
-        [HiddenInput(DisplayValue = true)]
-        public string MembershipTypeID { get; set; }
 
         public virtual MembershipDetail MD { get; set; }
         public virtual User User { get; set; }

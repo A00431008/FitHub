@@ -23,6 +23,7 @@ namespace FitHub.Data
             {
                 new MembershipDetail
                 {
+                    MembershipTypeID = "1",
                     MembershipTypeName = "Standard",
                     DurationMonths = 6,
                     Cost = 400,
@@ -30,6 +31,7 @@ namespace FitHub.Data
                 },
                 new MembershipDetail
                 {
+                    MembershipTypeID = "2",
                     MembershipTypeName = "Premium",
                     DurationMonths = 12,
                     Cost = 750,
@@ -37,6 +39,7 @@ namespace FitHub.Data
                 },
                 new MembershipDetail
                 {
+                    MembershipTypeID = "3",
                     MembershipTypeName = "Student",
                     DurationMonths = 1,
                     Cost = 50,

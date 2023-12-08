@@ -9,6 +9,7 @@ builder.Services.AddDbContext<GymDbContext>(options =>
 
 // Register the capacity validation service
 builder.Services.AddScoped<AmenityManagementService>();
+builder.Services.AddScoped<MembershipManagementService>();
 
 // Register the gym service
 builder.Services.AddScoped<GymDbContext>();

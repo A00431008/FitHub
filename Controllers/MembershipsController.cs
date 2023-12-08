@@ -73,9 +73,9 @@ namespace FitHub.Controllers
             membership.MD = membDetail;
 
             membership.AmountPaid = membDetail.Cost;
+            membership.EndDate = _membMgmtService.GetMembershipEndDate(membTypeId, membership.StartDate);
 
-
-            if (membership.StartDate < DateTime.Now)
+            /*if (membership.StartDate < DateTime.Now)
             {
                 ModelState.AddModelError(nameof(Membership.StartDate), "Start Date should not be in the past.");
                 //membership.EndDate = GetMembershipEndDate(membership.membTypeId, membership.StartDate);
@@ -83,12 +83,18 @@ namespace FitHub.Controllers
             else if (!_membMgmtService.IsMembershipValid(membership))
             {
                // ModelState.AddModelError(nameof(Booking.NumberOfPeople), "Membership");
-            }
+            }*/
+
+            ModelState.Remove("MD");
+            ModelState.Remove("User");
+            //ModelState.Remove("UserId");
+            ModelState.Remove("MembershipID");
 
             if (ModelState.IsValid)
             {
                 _context.Add(membership);
                 await _context.SaveChangesAsync();
+                //_membMgmtService.CreateMembership(membership);
                 return RedirectToAction(nameof(Index));
             }
             ViewData["MembershipTypeID"] = new SelectList(_context.Set<MembershipDetail>(), "MembershipTypeID", "MembershipTypeName", membership.MembershipTypeID);
@@ -109,7 +115,7 @@ namespace FitHub.Controllers
             {
                 return NotFound();
             }
-            ViewData["MembershipTypeID"] = new SelectList(_context.Set<MembershipDetail>(), "MembershipTypeID", "MembershipTypeID", membership.MembershipTypeID);
+            ViewData["MembershipTypeID"] = new SelectList(_context.Set<MembershipDetail>(), "MembershipTypeID", "MembershipTypeName", membership.MembershipTypeID);
             ViewData["UserID"] = new SelectList(_context.User, "UserID", "UserID", membership.UserID);
             return View(membership);
         }

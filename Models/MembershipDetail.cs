@@ -6,7 +6,7 @@ namespace FitHub.Models
     public class MembershipDetail
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string MembershipTypeID { get; set; }
 
         [Required, StringLength(50)]

@@ -49,6 +49,7 @@ namespace FitHub.Services
             return endDate;
         }
 
+       
         /*public int GetMembershipDuration(string memberId)
         {
             int duration = 0;

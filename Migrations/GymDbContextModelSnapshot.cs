@@ -85,16 +85,10 @@ namespace FitHub.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("AmountPaid")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("EndDate")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("MembershipType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MembershipTypeID")
                         .IsRequired()
@@ -119,7 +113,6 @@ namespace FitHub.Migrations
             modelBuilder.Entity("FitHub.Models.MembershipDetail", b =>
                 {
                     b.Property<string>("MembershipTypeID")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("Cost")
