@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using FitHub.Data;
 using FitHub.Models;
 using FitHub.Services;
+using Newtonsoft.Json;
 
 namespace FitHub.Controllers
 {
@@ -70,7 +71,7 @@ namespace FitHub.Controllers
             string membTypeId = membership.MembershipTypeID;
 
             var user = await _context.User.FirstOrDefaultAsync(u => u.Email == emailFromCookies);
-            string userId = user.UserID;
+            membership.UserID = user.UserID;
             //var user = await _context.User.FindAsync(userId);
             var membDetail = await _context.MembershipDetail.FindAsync(membTypeId);
            
@@ -88,9 +89,13 @@ namespace FitHub.Controllers
 
             if (ModelState.IsValid)
             {
-                _context.Add(membership);
+                /*_context.Add(membership);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index));*/
+
+                var membershipJson = JsonConvert.SerializeObject(membership);
+                TempData["MembershipData"] = membershipJson;
+                return RedirectToAction("MembershipPaymentForm", "Payment");
             }
             ViewData["MembershipTypeID"] = new SelectList(_context.Set<MembershipDetail>(), "MembershipTypeID", "MembershipTypeName", membership.MembershipTypeID);
             ViewData["UserID"] = new SelectList(_context.User, "UserID", "UserID", membership.UserID);
