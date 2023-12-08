@@ -27,14 +27,14 @@ namespace FitHub.Services
             {
                 numberReserved = GetSwimmingPoolNumberReserved(bookingDate, amenityId);
             }
-            /*else if (amenityId == "2")
+            else if (amenityId == "2")
             {
                 numberReserved = GetSaunaNumberReserved(bookingDate, amenityId);
             }
             else
             {
                 numberReserved = GetSpaNumberReserved(bookingDate, amenityId);
-            }*/
+            }
 
             int maxCapacityPerDay = GetMaxCapacityPerDay(amenityId);
 
@@ -54,7 +54,15 @@ namespace FitHub.Services
 
             if (amenityId == "1")
             {
-                UpdateSwimmingPoolSlots(bookingDate, numberOfPeople);
+                UpdateSwimmingPoolSlots(bookingDate, 1, numberOfPeople);
+            }
+            else if (amenityId == "2")
+            {
+                UpdateSaunaSlots(bookingDate, 2, numberOfPeople);
+            }
+            else
+            {
+                UpdateSpaSlots(bookingDate, 3, numberOfPeople);
             }
         }
 
@@ -63,200 +71,203 @@ namespace FitHub.Services
             int numberReserved = 0;
             //using (gymDbContext)
             //{
-                try
+            try
+            {
+                var swimmingPool = gymDbContext.SwimmingPool
+                                .Where(r => r.Date == date)
+                                .FirstOrDefault();
+                if (swimmingPool != null)
                 {
-                    var swimmingPool = gymDbContext.SwimmingPool
-                                    .Where(r => r.Date == date)
-                                    .FirstOrDefault();
-                    if (swimmingPool != null)
-                    {
-                        numberReserved = swimmingPool.NumberReserved;
-                    }
+                    numberReserved = swimmingPool.NumberReserved;
                 }
+            }
 
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error retrieving NumberReserved for swimming pool: {ex.Message}");
-                    return 0;
-                }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error retrieving NumberReserved for swimming pool: {ex.Message}");
+                return 0;
+            }
             //}
             return numberReserved;
         }
 
-        /*private int GetSaunaNumberReserved(DateTime date, string amenityId)
+        private int GetSaunaNumberReserved(DateTime date, string amenityId)
         {
             int numberReserved = 0;
-            using (gymDbContext)
+            //using (gymDbContext)
+            //{
+            try
             {
-                try
+                var sauna = gymDbContext.Sauna
+                            .Where(r => r.Date == date)
+                            .FirstOrDefault();
+                if (sauna != null)
                 {
-                    var sauna = gymDbContext.Sauna
-                                .Where(r => r.Date == date)
-                                .FirstOrDefault();
-                    if (sauna != null)
-                    {
-                        numberReserved = sauna.NumberReserved;
-                    }
-                }
-
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error retrieving NumberReserved for sauna: {ex.Message}");
-                    return 0;
+                    numberReserved = sauna.NumberReserved;
                 }
             }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error retrieving NumberReserved for sauna: {ex.Message}");
+                return 0;
+            }
+            //}
             return numberReserved;
         }
 
         private int GetSpaNumberReserved(DateTime date, string amenityId)
         {
             int numberReserved = 0;
-            using (gymDbContext)
+            // using (gymDbContext)
+            //{
+            try
             {
-                try
+                var spa = gymDbContext.Spa
+                            .Where(r => r.Date == date)
+                            .FirstOrDefault();
+                if (spa != null)
                 {
-                    var spa = gymDbContext.Spa
-                                .Where(r => r.Date == date)
-                                .FirstOrDefault();
-                    if (spa != null)
-                    {
-                        numberReserved = spa.NumberReserved;
-                    }
-                }
-
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error retrieving NumberReserved for spa: {ex.Message}");
-                    return 0;
+                    numberReserved = spa.NumberReserved;
                 }
             }
 
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error retrieving NumberReserved for spa: {ex.Message}");
+                return 0;
+            }
+            //}
+
             return numberReserved;
-        }*/
+        }
 
         private int GetMaxCapacityPerDay(string amenityId)
         {
             int maxCapacityPerDay = 0;
             //using (gymDbContext)
             //{
-                try
-                {
-                    var amenity = gymDbContext.Amenity
-                        .Where(r => r.AmenityID == amenityId)
-                        .FirstOrDefault();
+            try
+            {
+                var amenity = gymDbContext.Amenity
+                    .Where(r => r.AmenityID == amenityId)
+                    .FirstOrDefault();
 
-                    if (amenity != null)
-                    {
-                        maxCapacityPerDay = amenity.MaxCapacityPerDay; 
-                    }
-                }
-                catch (Exception ex)
+                if (amenity != null)
                 {
-                    Console.WriteLine($"Error loading Amenity: {ex.Message}");
+                    maxCapacityPerDay = amenity.MaxCapacityPerDay;
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error loading Amenity: {ex.Message}");
+            }
             //}
 
             return maxCapacityPerDay;
         }
 
-        private void UpdateSwimmingPoolSlots(DateTime bookingDate, int numberOfPeople)
+        private void UpdateSwimmingPoolSlots(DateTime bookingDate, int amenityId, int numberOfPeople)
         {
             //using (gymDbContext)
             //{
-                try
+            try
+            {
+                var swimmingPool = gymDbContext.SwimmingPool
+                                .Where(r => r.Date == bookingDate)
+                                .FirstOrDefault();
+
+                if (swimmingPool != null)
                 {
-                    var swimmingPool = gymDbContext.SwimmingPool
-                                    .Where(r => r.Date == bookingDate)
-                                    .FirstOrDefault();
-
-                    if (swimmingPool != null)
+                    swimmingPool.NumberReserved = swimmingPool.NumberReserved + numberOfPeople;
+                }
+                else
+                {
+                    gymDbContext.SwimmingPool.Add(new SwimmingPool
                     {
-                        swimmingPool.NumberReserved = swimmingPool.NumberReserved + numberOfPeople;
-                    }
-                    else
-                    {
-                        gymDbContext.SwimmingPool.Add(new SwimmingPool
-                        {
-                            Date = bookingDate,
-                            NumberReserved = numberOfPeople,
-                            AmenityId = 1
-                        });
-                    }
-
-                    gymDbContext.SaveChanges();
+                        Date = bookingDate,
+                        NumberReserved = numberOfPeople,
+                        AmenityId = amenityId
+                    });
                 }
 
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error updating NumberReserved for swimming pool: {ex.Message}");
-                }
+                gymDbContext.SaveChanges();
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error updating NumberReserved for swimming pool: {ex.Message}");
+            }
             //}
         }
 
-        /*private void UpdateSaunaSlots(DateTime bookingDate, string amenityId, int numberOfPeople)
+        private void UpdateSaunaSlots(DateTime bookingDate, int amenityId, int numberOfPeople)
         {
-            using (gymDbContext)
+            //using (gymDbContext)
+            //{
+            try
             {
-                try
+                var sauna = gymDbContext.Sauna
+                            .Where(r => r.Date == bookingDate)
+                            .FirstOrDefault();
+
+                if (sauna != null)
                 {
-                    var sauna = gymDbContext.Sauna
-                                .Where(r => r.Date == bookingDate)
-                                .FirstOrDefault();
-
-                    if (sauna != null)
+                    sauna.NumberReserved = sauna.NumberReserved + numberOfPeople;
+                }
+                else
+                {
+                    gymDbContext.Sauna.Add(new Sauna
                     {
-                        sauna.NumberReserved = sauna.NumberReserved + numberOfPeople;
-                    }
-                    else
-                    {
-                        gymDbContext.Sauna.Add(new Sauna
-                        {
-                            Date = bookingDate,
-                            NumberReserved = numberOfPeople
-                        });
-                    }
-
-                    gymDbContext.SaveChanges();
+                        Date = bookingDate,
+                        NumberReserved = numberOfPeople,
+                        AmenityId = amenityId
+                    });
                 }
 
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error updating NumberReserved for sauna: {ex.Message}");
-                }
+                gymDbContext.SaveChanges();
             }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error updating NumberReserved for sauna: {ex.Message}");
+            }
+            //}
         }
 
-        private void UpdateSpaSlots(DateTime bookingDate, string amenityId, int numberOfPeople)
+        private void UpdateSpaSlots(DateTime bookingDate, int amenityId, int numberOfPeople)
         {
 
-            using (gymDbContext)
+            //using (gymDbContext)
+            //{
+            try
             {
-                try
+                var spa = gymDbContext.Spa
+                            .Where(r => r.Date == bookingDate)
+                            .FirstOrDefault();
+
+                if (spa != null)
                 {
-                    var spa = gymDbContext.Spa
-                                .Where(r => r.Date == bookingDate)
-                                .FirstOrDefault();
-
-                    if (spa != null)
+                    spa.NumberReserved = spa.NumberReserved + numberOfPeople;
+                }
+                else
+                {
+                    gymDbContext.Spa.Add(new Spa
                     {
-                        spa.NumberReserved = spa.NumberReserved + numberOfPeople;
-                    }
-                    else
-                    {
-                        gymDbContext.Spa.Add(new Spa
-                        {
-                            Date = bookingDate,
-                            NumberReserved = numberOfPeople
-                        });
-                    }
-
-                    gymDbContext.SaveChanges();
+                        Date = bookingDate,
+                        NumberReserved = numberOfPeople,
+                        AmenityId = amenityId
+                    });
                 }
 
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error updating NumberReserved for spa: {ex.Message}");
-                }
-            }*/
+                gymDbContext.SaveChanges();
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error updating NumberReserved for spa: {ex.Message}");
+            }
+            //}
         }
     }
+}
