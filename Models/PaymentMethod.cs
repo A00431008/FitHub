@@ -31,6 +31,7 @@ namespace FitHub.Models
         [Required(ErrorMessage = "CVV is Required")]
         [RegularExpression(@"^[0-9]{3,4}$", ErrorMessage = "Invalid CVV")]
         public string? CVV { get; set; }
+        public Booking Booking { get; set; }
 
 #pragma warning disable CS8604 // Possible null reference argument.        
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

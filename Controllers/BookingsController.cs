@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using FitHub.Data;
 using FitHub.Models;
 using FitHub.Services;
+using Newtonsoft.Json;
 
 namespace FitHub.Controllers
 {
@@ -91,10 +92,14 @@ namespace FitHub.Controllers
 
             if (ModelState.IsValid)
             {
-                _context.Add(booking);
+                /*_context.Add(booking);
                 await _context.SaveChangesAsync();
                 _amenityManagementService.UpdateAmenityCapacity(booking);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index));*/
+                var bookingJson = JsonConvert.SerializeObject(booking);
+                TempData["BookingData"] = bookingJson;
+                //TempData["BookingData"] = booking;
+                return RedirectToAction("PaymentForm", "Payment");
             }
             ViewData["AmenityID"] = new SelectList(_context.Amenity, "AmenityID", "AmenityName", booking.AmenityID);
             ViewData["UserID"] = new SelectList(_context.User, "UserID", "UserID", booking.UserID);
