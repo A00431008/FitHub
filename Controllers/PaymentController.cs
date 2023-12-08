@@ -62,11 +62,10 @@ namespace FitHub.Controllers
             {
                 _context.Booking.Add(paymentMethod.Booking);
                 _context.SaveChanges();
+                _amenityManagementService.UpdateAmenityCapacity(paymentMethod.Booking);
                 //return Ok(new { Success = true, Message = "Payment Successful !!!" });
                 return RedirectToAction("Index", "Bookings");
             }
-
-
 
             return View("PaymentForm", paymentMethod);
         }
