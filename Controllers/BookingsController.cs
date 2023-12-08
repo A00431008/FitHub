@@ -28,9 +28,18 @@ namespace FitHub.Controllers
         // GET: Bookings
         public async Task<IActionResult> Index()
         {
-            var gymDbContext = _context.Booking.Include(b => b.Amenity).Include(b => b.User);
-            return View(await gymDbContext.ToListAsync());
+            var userId = User.FindFirst("UserID").Value;
+            var bookings = _context.Booking
+                        .Include(b => b.Amenity)
+                        .Include(b => b.User)
+                        .Where(b => b.UserID == userId)
+                        .OrderBy(b => b.BookingDate);
+            return View(await bookings.ToListAsync());
         }
+
+        // GET: Bookings
+        /*[Route("/Bookings/DisplayBookings")]*/
+    
 
         // GET: Bookings/Details/5
         public async Task<IActionResult> Details(string id)
