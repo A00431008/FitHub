@@ -26,9 +26,18 @@ namespace FitHub.Controllers
         // GET: Memberships
         public async Task<IActionResult> Index()
         {
-            var gymDbContext = _context.Membership.Include(m => m.MD).Include(m => m.User);
-            return View(await gymDbContext.ToListAsync());
+            var userId = User.FindFirst("UserID").Value;
+            var memb = _context.Membership
+                        .Include(m => m.MD).Include(m => m.User)
+                        .Where(m => m.UserID == userId)
+                        .OrderBy(m => m.StartDate);
+            return View(await memb.ToListAsync());
         }
+       //public async Task<IActionResult> Index()
+       //{
+       //    var gymDbContext = _context.Membership.Include(m => m.MD).Include(m => m.User);
+       //    return View(await gymDbContext.ToListAsync());
+       //}
 
         // GET: Memberships/Details/5
         public async Task<IActionResult> Details(string id)
