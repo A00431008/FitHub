@@ -4,12 +4,12 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Your active memberships</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <button class="btn btn-success" asp-controller="Memberships" asp-action="Create">Buy a new membership</button>
 </p>
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
             <th>
@@ -23,9 +23,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.MD)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.User)
             </th>
             <th></th>
         </tr>
@@ -46,12 +43,7 @@
                 @Html.DisplayFor(modelItem => item.MD.MembershipTypeID)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.User.UserID)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.MembershipID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.MembershipID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.MembershipID">Delete</a>
+                <a asp-action="Details" asp-route-id="@item.MembershipID">Details</a>
             </td>
         </tr>
 }
