@@ -99,7 +99,7 @@ namespace FitHub.Controllers
                 var bookingJson = JsonConvert.SerializeObject(booking);
                 TempData["BookingData"] = bookingJson;
                 //TempData["BookingData"] = booking;
-                return RedirectToAction("PaymentForm", "Payment");
+                return RedirectToAction("BookingPaymentForm", "Payment");
             }
             ViewData["AmenityID"] = new SelectList(_context.Amenity, "AmenityID", "AmenityName", booking.AmenityID);
             ViewData["UserID"] = new SelectList(_context.User, "UserID", "UserID", booking.UserID);

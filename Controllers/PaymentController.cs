@@ -20,7 +20,7 @@ namespace FitHub.Controllers
         }
 
         //[HttpGet]
-        public IActionResult PaymentForm()
+        public IActionResult BookingPaymentForm()
         {
             var booking = JsonConvert.DeserializeObject<Booking>(TempData["BookingData"] as String);
 
@@ -29,7 +29,7 @@ namespace FitHub.Controllers
                 return NotFound();
             }
 
-            return View("PaymentForm", new PaymentMethod { Booking = booking });
+            return View("BookingPaymentForm", new PaymentMethod { Booking = booking });
             /*// Declare and return an empty payment method form at the beginning
             var paymentMethod = new PaymentMethod();
             return View(paymentMethod);*/
@@ -37,7 +37,7 @@ namespace FitHub.Controllers
 
         [HttpPost]
         /*[Route("/api/payment/process")]*/
-        public IActionResult ProcessPayment(PaymentMethod paymentMethod)
+        public IActionResult ProcessBookingPayment(PaymentMethod paymentMethod)
         {
 
             ModelState.Remove("Booking.User");
@@ -67,7 +67,7 @@ namespace FitHub.Controllers
                 return RedirectToAction("Index", "Bookings");
             }
 
-            return View("PaymentForm", paymentMethod);
+            return View("BookingPaymentForm", paymentMethod);
         }
     }
 }
