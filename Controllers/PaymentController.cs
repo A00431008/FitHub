@@ -69,5 +69,44 @@ namespace FitHub.Controllers
 
             return View("BookingPaymentForm", paymentMethod);
         }
+        public IActionResult MembershipPaymentForm()
+        {
+            var membership = JsonConvert.DeserializeObject<Membership>(TempData["MembershipData"] as String);
+
+            if (membership == null)
+            {
+                return NotFound();
+            }
+
+            return View("MembershipPaymentForm", new PaymentMethod { Membership = membership });
+            /*// Declare and return an empty payment method form at the beginning
+            var paymentMethod = new PaymentMethod();
+            return View(paymentMethod);*/
+        }
+
+        [HttpPost]
+        /*[Route("/api/payment/process")]*/
+        public IActionResult ProcessMembershipPayment(PaymentMethod paymentMethod)
+        {
+
+            ModelState.Remove("Membership.MembershipID");
+            ModelState.Remove("Membership.UserID");
+            ModelState.Remove("Membership.MembershipTypeID");
+            ModelState.Remove("Membership.StartDate");
+            ModelState.Remove("Membership.EndDate");
+            ModelState.Remove("Membership.AmountPaid");
+            ModelState.Remove("Membership.MD");
+            ModelState.Remove("Membership.User");
+
+            // Always set the payment to success for this project
+            if (ModelState.IsValid)
+            {
+                _context.Membership.Add(paymentMethod.Membership);
+                _context.SaveChanges();
+                return RedirectToAction("Index", "Memberships");
+            }
+
+            return View("MembershipPaymentForm", paymentMethod);
+        }
     }
 }
