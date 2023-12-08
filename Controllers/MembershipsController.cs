@@ -65,14 +65,12 @@ namespace FitHub.Controllers
         public async Task<IActionResult> Create([Bind("MembershipID,UserID,MembershipType,StartDate,EndDate,AmountPaid,MembershipTypeID")] Membership membership)
         {
             var claims = User.Claims;
-            string emailFromCookies = User.FindFirst("UserID")?.Value;
-
+            var userID = User.FindFirst("UserID")?.Value;
             
             string membTypeId = membership.MembershipTypeID;
 
-            var user = await _context.User.FirstOrDefaultAsync(u => u.Email == emailFromCookies);
+            var user = await _context.User.FindAsync(userID);
             membership.UserID = user.UserID;
-            //var user = await _context.User.FindAsync(userId);
             var membDetail = await _context.MembershipDetail.FindAsync(membTypeId);
            
             
@@ -89,10 +87,6 @@ namespace FitHub.Controllers
 
             if (ModelState.IsValid)
             {
-                /*_context.Add(membership);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));*/
-
                 var membershipJson = JsonConvert.SerializeObject(membership);
                 TempData["MembershipData"] = membershipJson;
                 return RedirectToAction("MembershipPaymentForm", "Payment");
