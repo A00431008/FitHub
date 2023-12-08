@@ -75,12 +75,29 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.PostalCode)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Password)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IsAdmin)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Password)
-        </dd>
+        <dt class="col-sm-10">
+            <span class="col-sm-2">
+                @if (Model.IsAdmin)
+                {
+                    <span>Yes</span>
+                }
+                else
+                {
+                    <span>No</span>
+                }
+            </span>
+        </dt>      
+        <span class="col-md-12">
+            <form asp-controller="User" asp-action="ChangeAdminStatus" asp-route-id="@Model.UserID">
+                <button class="btn btn-danger" type="submit">
+                    @if(Model.IsAdmin) {<span>Assign Admin Status</span>} else {<span>Revoke Admin Status</span>}
+                </button>
+            </form>
+        </span>
+        
     </dl>
 </div>
 <div>

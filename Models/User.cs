@@ -44,7 +44,7 @@ namespace FitHub.Models
 
         [Required(ErrorMessage = "Street Address is Required")]
         [DisplayName("Street Address")]
-        [RegularExpression("^\\d+\\s+[A-Za-z]+\\s+[A-Za-z]+$", ErrorMessage = "Invalid Street Address")]
+        [RegularExpression("^[a-zA-Z0-9 -]*$", ErrorMessage = "Invalid Street Address")]
         public string? Address { get; set; }
 
         [Required(ErrorMessage = "City is Required")]
@@ -76,5 +76,10 @@ namespace FitHub.Models
         [DisplayName("Confirm Password")]
         [NotMapped]
         public string? ConfirmPassword { get; set; }
+
+        [DefaultValue(false)]
+        [DisplayName("Is Admin")]
+        public bool IsAdmin { get; set; }
+
     }
 }

@@ -54,10 +54,15 @@ namespace FitHub.Controllers
                         + user.Password);
                     return View("Login");
                 };
-
+                
                 var claims = new List<Claim> { 
                     new Claim("UserID", user.UserID),
                 };
+
+                if (user.IsAdmin)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, "Admin"));
+                }
 
                 var claimsIdentity = new ClaimsIdentity(claims, 
                     CookieAuthenticationDefaults.AuthenticationScheme);

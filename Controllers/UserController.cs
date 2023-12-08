@@ -14,9 +14,12 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using System.Text;
 using System.Security.Cryptography;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FitHub.Controllers
 {
+    [Authorize]
     public class UserController : Controller
     {
         private readonly GymDbContext _context;
@@ -28,6 +31,7 @@ namespace FitHub.Controllers
 
 
         // GET: User
+        [Authorize(Policy ="RequireAdminRole")]
         public async Task<IActionResult> Index()
         {
             return _context.User != null ?
@@ -35,6 +39,16 @@ namespace FitHub.Controllers
                         Problem("Entity set 'GymDbContext.User'  is null.");
         }
 
+        [Authorize]
+        public async Task<IActionResult> Profile()
+        {
+            string userId = User.FindFirst("UserID").Value;
+            var user = await _context.User.FindAsync(userId);
+            return View("Details", user);
+
+        }
+
+        [Authorize(Policy ="RequireAdminRole")]
         // GET: User/Details/5
         public async Task<IActionResult> Details(string id)
         {
@@ -80,6 +94,20 @@ namespace FitHub.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(user);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangeAdminStatus(string id)
+        {
+            var user = await _context.User
+                .FirstOrDefaultAsync(m => m.UserID == id);
+            if (user != null)
+            {
+                user.IsAdmin = !user.IsAdmin;
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction("Details", new {id = id});
         }
 
         
