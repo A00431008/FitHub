@@ -34,7 +34,19 @@ namespace FitHub.Controllers
                         .Include(b => b.User)
                         .Where(b => b.UserID == userId)
                         .OrderBy(b => b.BookingDate);
-            return View(await bookings.ToListAsync());
+            /*ViewData["AmenityNames"] = getNames();*/
+            return View("Index", await bookings.ToListAsync());
+        }
+
+        public async Task<IActionResult> PastBookings()
+        {
+            var userId = User.FindFirst("UserID").Value;
+            var pastBookings = _context.Booking
+                .Include(b => b.Amenity)
+                .Include(b => b.User)
+                .Where(b => (b.UserID == userId && b.BookingDate < DateTime.Now))
+                .OrderByDescending(b => b.BookingDate);
+            return View("Index", await pastBookings.ToListAsync());
         }
 
         // GET: Bookings
@@ -136,5 +148,15 @@ namespace FitHub.Controllers
             });
             return rates;
         } 
+
+        private Dictionary<string, string> getNames()
+        {
+            var names = new Dictionary<string, string>();
+            var amenityTable = _context.Amenity.ToList();
+            amenityTable.ForEach(amenity => {
+                names[amenity.AmenityID] = amenity.AmenityName;
+            });
+            return names;
+        }
     }
 }
