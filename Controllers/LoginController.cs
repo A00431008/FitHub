@@ -80,6 +80,13 @@ namespace FitHub.Controllers
             return View(login);
         }
 
+        public async Task<IActionResult> LogOut()
+        {
+            await HttpContext.SignOutAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Index", "Home");
+        }
+
         public string HashPassword(string password)
         {
             using (var sha256 = SHA256.Create())
