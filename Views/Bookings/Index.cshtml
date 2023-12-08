@@ -1,16 +1,31 @@
 ﻿@model IEnumerable<FitHub.Models.Booking>
+@using Microsoft.AspNetCore.Http.Extensions
 
 @{
     ViewData["Title"] = "Index";
+    string currentUrl = Context.Request.GetDisplayUrl();
 }
 
-<h1>Your Upcoming Bookings</h1>
+<h1>Your @if (currentUrl.Contains("Past"))
+    {
+        <span>Past</span>
+    }
+    else
+    {
+        <span>Upcoming</span>
+    } Bookings
+</h1>
 
 <p>
-    <button class="btn btn-success" asp-action="Create">Make a new Booking</button>
+    <a class="btn btn-success" asp-action="Create">Create New</a>
+    @if (!currentUrl.Contains("Past")) {
+        <a class="btn btn-success" asp-action="PastBookings">View Past Bookings</a>
+    } else {
+        <a class="btn btn-success" asp-action="Index">View Upcoming Bookings</a>
+    }
 </p>
-<table class="table table-striped">
-    <thead>
+<table class="table table-striped table-hover">
+    <thead class="thead-dark">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.BookingDate)
@@ -46,7 +61,7 @@
                 @Html.DisplayFor(modelItem => item.PurchasedDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Amenity.AmenityID)
+                @Html.DisplayFor(modelItem => item.Amenity.AmenityName)
             </td>
             <td>
                 <a asp-action="Details" asp-route-id="@item.BookingID">Details</a>
@@ -55,3 +70,9 @@
 }
     </tbody>
 </table>
+
+@* <script>
+    $(document).ready(function () {
+        $('#indexTable').DataTable();
+    });
+</script> *@
