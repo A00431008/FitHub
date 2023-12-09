@@ -18,7 +18,9 @@
             </div>*@
             <div class="form-group">
                 <label asp-for="MembershipTypeID" class="control-label"></label>
-                <select asp-for="MembershipTypeID" class ="form-control" asp-items="ViewBag.MembershipTypeID"></select>
+                <select asp-for="MembershipTypeID" class ="form-control" asp-items="ViewBag.MembershipTypeID">
+                    <option value="" disabled selected>Choose a membership</option> <!-- Default value -->
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="StartDate" class="control-label"></label>
@@ -48,9 +50,7 @@
         </div>
     </div>
 </div>
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
 
 @section Scripts {
@@ -62,8 +62,15 @@
             console.log(data);
             var selectedMembershipType = $('#MembershipTypeID').val();
             console.log("Membership Type: " + selectedMembershipType);
-            $("#membershipDescriptionDiv").html('<strong>What you get with this membership</strong><br />' + data[selectedMembershipType]);
-        }
+
+            if (!selectedMembershipType) {
+                $("#membershipDescriptionDiv").html('<em>Please select a membership to view details.</em>');
+            } else{
+                $("#membershipDescriptionDiv").html('<strong>What you get with this membership</strong><br />' + data[selectedMembershipType]);
+
+            }
+
+                    }
 
         // Call the function when the membership dropdown changes
         $("#MembershipTypeID").on('input', fetchMembershipDescription);
