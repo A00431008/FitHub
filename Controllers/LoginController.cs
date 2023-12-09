@@ -55,9 +55,7 @@ namespace FitHub.Controllers
 
                 if (user == null || HashPassword(login.Password) != user.Password)
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid Login Attempt\n"
-                        + HashPassword(login.Password) + "\n"
-                        + user.Password);
+                    ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
                     return View("Login");
                 };
 

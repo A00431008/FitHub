@@ -118,7 +118,7 @@ namespace FitHub.Controllers
 #pragma warning restore CS8604 // Possible null reference argument.
 
         // GET: User/Edit/5
-        [Authorize(Policy ="RequireAdminRole")]
+        [Authorize]
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null || _context.User == null)
@@ -140,7 +140,7 @@ namespace FitHub.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Policy = "RequireAdminRole")]
+        [Authorize]
         public async Task<IActionResult> Edit(string id, [Bind("UserID,Email,FirstName,LastName,PhoneNumber,DOB,Gender,Address,City,Province,Country,PostalCode,Password")] User user)
         {
             if (id != user.UserID)
