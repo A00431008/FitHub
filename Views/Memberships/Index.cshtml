@@ -32,9 +32,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.AmountPaid)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MD)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -52,10 +49,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.AmountPaid)
-            </td>
-            
-            <td>
-                @Html.DisplayFor(modelItem => item.MD.MembershipTypeID)
             </td>
             <td>
                 <a asp-action="Details" asp-route-id="@item.MembershipID">Details</a>
