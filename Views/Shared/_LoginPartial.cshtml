@@ -1,23 +1,28 @@
-﻿
-<ul class="navbar-nav">
-    @if (User.FindFirst("UserID") != null)
-    {
-        <li class="nav-item route-button">
-            <a class="nav-link text-dark" href="/User/Profile/@User.FindFirst("UserID").Value">Profile</a>
-        </li>
-        <li class="nav-item route-button">
-            <form class="form-inline" asp-controller="Login" asp-action="Logout" >
-                <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-            </form>
-        </li>
-    }
-    else
-    {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-controller="User" asp-action="Create">Register</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" href="/Login">Login</a>
-        </li>
-    }
-</ul>
+﻿    
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex flex-column align-items-center text-center">
+            <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150">
+            <div class="mt-3 userProfile">
+                <h4 class="text-primary">@User.FindFirst("Name")?.Value</h4>
+                    <p class="text-secondary mb-1">@User.FindFirst("status")?.Value</p>
+                    <p class="text-muted font-size-sm">@User.FindFirst("Region")?.Value</p>
+                    <a class="btn btn-secondary" href="/User/Details/@User.FindFirst("UserID")?.Value">
+                        Profile
+                    </a>
+                    <a class="btn btn-dark" href="Login/Logout">Logout</a>
+            </div>
+            
+            <div>
+                <hr class="w-100" />
+                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#membershipLinks" aria-expanded="false" aria-controls="linksCollapse">Your Memberhips</button>
+                <div class="collapse mt-2">
+                    <div class="card card-body" id="membershipLinks" >
+                        <a class="btn btn-secondary" href="/Memberships/Index">View you Membership</a>
+                        <a class="btn btn-secondary "href="/Memberships/Index">Become a Member</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -57,6 +57,9 @@ namespace FitHub.Controllers
                 
                 var claims = new List<Claim> { 
                     new Claim("UserID", user.UserID),
+                    new Claim("Name", user.FirstName + " " + user.LastName),
+                    new Claim("Region", user.City + ", " + user.Province + ", " + user.Country),
+                    new Claim("status", user.IsAdmin ? "Administrator": "Gym User")
                 };
 
                 if (user.IsAdmin)
@@ -79,7 +82,7 @@ namespace FitHub.Controllers
                     new ClaimsPrincipal(claimsIdentity), authProperties);
 
 
-                return RedirectToAction("Index", "User");
+                return RedirectToAction("Index", "Home");
             }
             ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
             return View(login);

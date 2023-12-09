@@ -68,6 +68,7 @@ namespace FitHub.Controllers
         }
 
         // GET: User/Create
+        [AllowAnonymous]
         public IActionResult Create()
         {
             return View();
@@ -78,6 +79,7 @@ namespace FitHub.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<IActionResult> Create([Bind("UserID,Email,FirstName,LastName,PhoneNumber,DOB,Gender,Address,City,Province,Country,PostalCode,Password,ConfirmPassword")] User user)
         {
 #pragma warning disable CS8604 // Possible null reference argument.
@@ -98,6 +100,7 @@ namespace FitHub.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy =("RequireAdminRole"))]
         public async Task<IActionResult> ChangeAdminStatus(string id)
         {
             var user = await _context.User
@@ -110,11 +113,12 @@ namespace FitHub.Controllers
             return RedirectToAction("Details", new {id = id});
         }
 
-        
+
 
 #pragma warning restore CS8604 // Possible null reference argument.
 
         // GET: User/Edit/5
+        [Authorize(Policy ="RequireAdminRole")]
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null || _context.User == null)
@@ -136,6 +140,7 @@ namespace FitHub.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "RequireAdminRole")]
         public async Task<IActionResult> Edit(string id, [Bind("UserID,Email,FirstName,LastName,PhoneNumber,DOB,Gender,Address,City,Province,Country,PostalCode,Password")] User user)
         {
             if (id != user.UserID)
@@ -183,6 +188,7 @@ namespace FitHub.Controllers
         }
 
         // GET: User/Delete/5
+        [Authorize(Policy = "RequireAdminRole")]
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null || _context.User == null)
@@ -203,6 +209,7 @@ namespace FitHub.Controllers
         // POST: User/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "RequireAdminRole")]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             if (_context.User == null)
@@ -224,6 +231,7 @@ namespace FitHub.Controllers
             return (_context.User?.Any(e => e.Email == email)).GetValueOrDefault();
         }
 
+        [AllowAnonymous]
         private string HashPassword(string password)
         {
             using (var sha256 = SHA256.Create())
