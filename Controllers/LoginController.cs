@@ -31,7 +31,12 @@ namespace FitHub.Controllers
         [Route("/Login")]
         public IActionResult Create()
         {
-            return View("Login");
+            var user = User.FindFirst("UserID")?.Value;
+            if (user == null)
+            {
+                return View("Login");
+            }
+            return RedirectToAction("Profile", "User");
         }
 
         // POST: Login/Create
