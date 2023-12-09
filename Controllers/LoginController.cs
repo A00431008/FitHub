@@ -1,4 +1,5 @@
-﻿using System;
+﻿//login controller
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -54,13 +55,13 @@ namespace FitHub.Controllers
 
                 if (user == null || HashPassword(login.Password) != user.Password)
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid Login Attempt\n" 
-                        + HashPassword(login.Password) + "\n" 
+                    ModelState.AddModelError(string.Empty, "Invalid Login Attempt\n"
+                        + HashPassword(login.Password) + "\n"
                         + user.Password);
                     return View("Login");
                 };
-                
-                var claims = new List<Claim> { 
+
+                var claims = new List<Claim> {
                     new Claim("UserID", user.UserID),
                     new Claim("Name", user.FirstName + " " + user.LastName),
                     new Claim("Region", user.City + ", " + user.Province + ", " + user.Country),
@@ -72,7 +73,7 @@ namespace FitHub.Controllers
                     claims.Add(new Claim(ClaimTypes.Role, "Admin"));
                 }
 
-                var claimsIdentity = new ClaimsIdentity(claims, 
+                var claimsIdentity = new ClaimsIdentity(claims,
                     CookieAuthenticationDefaults.AuthenticationScheme);
 
                 var authProperties = new AuthenticationProperties
@@ -87,7 +88,7 @@ namespace FitHub.Controllers
                     new ClaimsPrincipal(claimsIdentity), authProperties);
 
 
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Profile", "User");
             }
             ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
             return View(login);
