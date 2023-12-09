@@ -3,7 +3,7 @@
     <div class="card-body">
         <div class="d-flex flex-column align-items-center text-center">
             <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150">
-            <div class="mt-3 userProfile">
+            <div class="mt-3 userProfile" style="margin-bottom: 10px">
                 <h4 class="text-primary">@User.FindFirst("Name")?.Value</h4>
                     <p class="text-secondary mb-1">@User.FindFirst("status")?.Value</p>
                     <p class="text-muted font-size-sm">@User.FindFirst("Region")?.Value</p>
@@ -12,14 +12,26 @@
                     </a>
                     <a class="btn btn-dark" href="Login/Logout">Logout</a>
             </div>
-            
+
             <div>
                 <hr class="w-100" />
-                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#membershipLinks" aria-expanded="false" aria-controls="linksCollapse">Your Memberhips</button>
-                <div class="collapse mt-2">
-                    <div class="card card-body" id="membershipLinks" >
-                        <a class="btn btn-secondary" href="/Memberships/Index">View you Membership</a>
-                        <a class="btn btn-secondary "href="/Memberships/Index">Become a Member</a>
+                <button class="btn btn-primary memberships-navbar" type="button" data-toggle="collapse" data-target="#membershipLinks" aria-expanded="false" aria-controls="membershipLinks">
+                    Your Memberships
+                </button>
+                <div class="collapse mt-2" id="membershipLinks" style="height: 10px">
+                    <div class="memberships-navbar">
+                        <a class="btn btn-secondary" href="/Memberships/Index">View Your Memberships</a>
+                        <a class="btn btn-secondary" href="/Memberships/Create">Become a Member</a>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary bookings-navbar" type="button" data-toggle="collapse" data-target="#bookingLinks" aria-expanded="false" aria-controls="bookingLinks">
+                    Your Bookings
+                </button>
+                <div class="collapse mt-2" id="bookingLinks" style="height: 10px">
+                    <div class="bookings-navbar">
+                        <a class="btn btn-secondary" href="/Bookings/Index">View Your Bookings</a>
+                        <a class="btn btn-secondary" href="/Bookings/Create">Book an Amenity</a>
                     </div>
                 </div>
             </div>
