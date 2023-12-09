@@ -21,14 +21,17 @@
             {
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            Manage:
+                        <li class="nav-item text-light">
+                            <a class="nav-link text-light" href="">Manage:</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-controller="User" asp-action="Index">Users</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-light" asp-controller="Memberships" asp-action="Index">Memberships</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-controller="Bookings" asp-action="Index">Bookings</a>
                         </li>
                     </ul>
                 </div>
