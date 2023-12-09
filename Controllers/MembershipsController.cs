@@ -9,9 +9,11 @@ using FitHub.Data;
 using FitHub.Models;
 using FitHub.Services;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FitHub.Controllers
 {
+    [Authorize]
     public class MembershipsController : Controller
     {
         private readonly GymDbContext _context;

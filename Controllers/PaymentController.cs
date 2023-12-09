@@ -1,12 +1,14 @@
 ﻿using FitHub.Data;
 using FitHub.Models;
 using FitHub.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
 namespace FitHub.Controllers
 {
+    [Authorize]
     public class PaymentController : Controller
     {
 

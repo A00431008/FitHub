@@ -48,7 +48,7 @@ namespace FitHub.Controllers
 
         }
 
-        [Authorize(Policy ="RequireAdminRole")]
+        [Authorize]
         // GET: User/Details/5
         public async Task<IActionResult> Details(string id)
         {
