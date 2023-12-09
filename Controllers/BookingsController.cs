@@ -26,6 +26,7 @@ namespace FitHub.Controllers
         }
 
         // GET: Bookings
+
         public async Task<IActionResult> Index()
         {
             var userId = User.FindFirst("UserID").Value;
