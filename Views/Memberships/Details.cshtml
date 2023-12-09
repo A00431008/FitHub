@@ -4,45 +4,45 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>Membership</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.MD.MembershipTypeName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.MD.MembershipTypeName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.StartDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.StartDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EndDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EndDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AmountPaid)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AmountPaid)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.MD.Description)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.MD.Description)
-        </dd>
-       
-    </dl>
+<div class=" body-header d-flex justify-content-between">
+    <h2>Details</h2>
+    <div class="navbuttons">
+        <a class="btn btn-success" asp-action="Index">Back to List</a>
+    </div>
 </div>
-<div>
-    <a asp-action="Index">Click here to go Back</a>
+<hr />
+
+<div class="body-content">
+    <ul class="list-group list-group-flush body-content">
+        <li class="list-group-item d-flex align-items-center flex-wrap">
+            <h6 class="mb-0 col-sm-4">
+                 @Html.DisplayNameFor(model => model.MD.MembershipTypeName)
+            </h6 class = "col-sm-6">
+            <span class="text-secondary">@Html.DisplayFor(model => model.MD.MembershipTypeName)</span>
+        </li>
+        <li class="list-group-item d-flex align-items-center flex-wrap">
+            <h6 class="mb-0 col-sm-4">
+                @Html.DisplayNameFor(model => model.StartDate)
+            </h6>
+            <span class="text-secondary">@Html.DisplayFor(model => model.StartDate)</span>
+        </li>
+        <li class="list-group-item d-flex align-items-center flex-wrap">
+            <h6 class="mb-0 col-sm-4">
+                @Html.DisplayNameFor(model => model.EndDate)
+            </h6>
+            <span class="text-secondary">@Html.DisplayFor(model => model.EndDate)</span>
+        </li>
+        <li class="list-group-item d-flex align-items-center flex-wrap">
+            <h6 class="mb-0 col-sm-4">
+                @Html.DisplayNameFor(model => model.AmountPaid)
+            </h6>
+            <span class="text-secondary">@Html.DisplayFor(model => model.AmountPaid)</span>
+        </li>
+        <li class="list-group-item d-flex align-items-center flex-wrap">
+            <h6 class="mb-0 col-sm-4">
+                @Html.DisplayNameFor(model => model.MD.Description)
+            </h6>
+            <span class="text-secondary">@Html.DisplayFor(model => model.MD.Description)</span>
+        </li>
+    </ul>
 </div>

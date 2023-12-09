@@ -33,7 +33,7 @@ namespace FitHub.Controllers
             var bookings = _context.Booking
                         .Include(b => b.Amenity)
                         .Include(b => b.User)
-                        .Where(b => b.UserID == userId)
+                        .Where(b => b.UserID == userId && b.BookingDate.Date > DateTime.Now.Date)
                         .OrderBy(b => b.BookingDate);
             ViewBag.PaymentSuccessMessage = TempData["PaymentSuccessMessage"] as string;
             return View("Index", await bookings.ToListAsync());
@@ -116,8 +116,8 @@ namespace FitHub.Controllers
                 ViewData["AmenityID"] = new SelectList(_context.Amenity, 
                     "AmenityID", "AmenityName", booking.AmenityID);
                 ViewData["Rates"] = getRates();
-                ModelState.AddModelError(nameof(Booking.NumberOfPeople), 
-                    "Booking is not valid based on capacity constraints.");
+                ModelState.AddModelError(string.Empty, 
+                    "Sorry! Looks like we don't have enough space for this day.\nPlease choose another date.");
             }
 
             ModelState.Remove("BookingID");
