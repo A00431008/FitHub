@@ -4,45 +4,45 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>Booking</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.BookingDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BookingDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NumberOfPeople)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NumberOfPeople)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AmountPaid)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AmountPaid)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PurchasedDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PurchasedDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Amenity)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Amenity.AmenityName)
-        </dd>
-    </dl>
+<div class=" body-header d-flex justify-content-between">
+    <h2>Booking Detail</h2>
+    <div class="navbuttons">
+        <a class="btn btn-success" asp-action="Index">Back to List</a>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.BookingID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<hr />
+
+<div class="body-content">
+    <ul class="list-group list-group-flush body-content">
+        <li class="list-group-item d-flex align-items-center flex-wrap">
+            <h6 class="mb-0 col-sm-4">
+                @Html.DisplayNameFor(model => model.BookingDate)
+            </h6 class = "col-sm-6">
+            <span class="text-secondary">@Html.DisplayFor(model => model.BookingDate)</span>
+        </li>
+        <li class="list-group-item d-flex align-items-center flex-wrap">
+            <h6 class="mb-0 col-sm-4">
+                @Html.DisplayNameFor(model => model.NumberOfPeople)
+            </h6>
+            <span class="text-secondary">@Html.DisplayFor(model => model.NumberOfPeople)</span>
+        </li>
+        <li class="list-group-item d-flex align-items-center flex-wrap">
+            <h6 class="mb-0 col-sm-4">
+                @Html.DisplayNameFor(model => model.AmountPaid)
+            </h6>
+            <span class="text-secondary">@Html.DisplayFor(model => model.AmountPaid)</span>
+        </li>
+        <li class="list-group-item d-flex align-items-center flex-wrap">
+            <h6 class="mb-0 col-sm-4">
+                @Html.DisplayNameFor(model => model.PurchasedDate)
+            </h6>
+            <span class="text-secondary">@Html.DisplayFor(model => model.PurchasedDate)</span>
+        </li>
+        <li class="list-group-item d-flex align-items-center flex-wrap">
+            <h6 class="mb-0 col-sm-4">
+                @Html.DisplayNameFor(model => model.Amenity)
+            </h6>
+            <span class="text-secondary">@Html.DisplayFor(model => model.Amenity.AmenityName)</span>
+        </li>
+    </ul>
 </div>

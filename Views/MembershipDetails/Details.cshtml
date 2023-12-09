@@ -4,39 +4,43 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+
+<div class=" body-header d-flex justify-content-between">
+    <h2>Details</h2>
+    <div class="navbuttons">
+        <a class="btn btn-success" asp-action="Index">Back to List</a>
+    </div>
+</div>
 
 <div>
-    <h4>MembershipDetail</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MembershipTypeName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MembershipTypeName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DurationMonths)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DurationMonths)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Cost)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Cost)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-    </dl>
+    <ul class="list-group list-group-flush body-content">
+        <li class="list-group-item d-flex align-items-center flex-wrap">
+            <h6 class="mb-0 col-sm-4">
+                @Html.DisplayNameFor(model => model.MembershipTypeName)
+            </h6 class = "col-sm-6">
+            <span class="text-secondary">@Html.DisplayFor(model => model.MembershipTypeName)</span>
+        </li>
+        <li class="list-group-item d-flex align-items-center flex-wrap">
+            <h6 class="mb-0 col-sm-4">
+                @Html.DisplayNameFor(model => model.DurationMonths)
+            </h6>
+            <span class="text-secondary">@Html.DisplayFor(model => model.DurationMonths)</span>
+        </li>
+        <li class="list-group-item d-flex align-items-center flex-wrap">
+            <h6 class="mb-0 col-sm-4">
+                @Html.DisplayNameFor(model => model.Cost)
+            </h6>
+            <span class="text-secondary">@Html.DisplayFor(model => model.Cost)</span>
+        </li>
+        <li class="list-group-item d-flex align-items-center flex-wrap">
+            <h6 class="mb-0 col-sm-4">
+                @Html.DisplayNameFor(model => model.Description)
+            </h6>
+            <span class="text-secondary">@Html.DisplayFor(model => model.Description)</span>
+        </li>
+    </ul>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.MembershipTypeID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    
 </div>
