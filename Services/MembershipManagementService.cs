@@ -50,29 +50,29 @@ namespace FitHub.Services
         }
 
        
-        /*public int GetMembershipDuration(string memberId)
+        public string GetMembershipDetails(string memberTypeId)
         {
-            int duration = 0;
+            string descp = null;
             try
             {
-                var membership = gymDbContext.Membership
-                    .FirstOrDefault(m => m.MemberId == memberId);
+                var membership = gymDbContext.MembershipDetail
+                    .FirstOrDefault(m => m.MembershipTypeID == memberTypeId);
 
                 if (membership != null)
                 {
-                    duration = membership.duration;
-                    return duration;
+                    descp = membership.Description;
+                    return descp;
 
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error retrieving Duration for the membership type {ex.Message}");
+                Console.WriteLine($"Error retrieving Description for the membership type {ex.Message}");
             }
 
-            return duration;
+            return descp;
         }
-
+/*
         public decimal GetMembershipCost(string memberId)
         {
             decimal cost = 0;

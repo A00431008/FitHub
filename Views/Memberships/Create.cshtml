@@ -35,17 +35,43 @@
                 <input asp-for="AmountPaid" class="form-control" />
                 <span asp-validation-for="AmountPaid" class="text-danger"></span>
             </div>*@
+            <br />
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
+    <div class="col-md-4">
+        <div id="membershipDescriptionDiv">
+            
+            <p id="membershipDescription"></p>
+        </div>
+    </div>
 </div>
-
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
 
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        // Function to fetch and display the membership description
+        function fetchMembershipDescription() {
+            var data = @Html.Raw(Json.Serialize(ViewBag.Details));
+            console.log(data);
+            var selectedMembershipType = $('#MembershipTypeID').val();
+            console.log("Membership Type: " + selectedMembershipType);
+            $("#membershipDescriptionDiv").html('<strong>What you get with this membership</strong><br />' + data[selectedMembershipType]);
+        }
+
+        // Call the function when the membership dropdown changes
+        $("#MembershipTypeID").on('input', fetchMembershipDescription);
+
+        // Fetch description when the page loads (if needed)
+        fetchMembershipDescription();
+    </script>
+
 }
+
+

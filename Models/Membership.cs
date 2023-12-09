@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using FitHub.Validations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel;
 
 namespace FitHub.Models
 {
@@ -20,7 +21,7 @@ namespace FitHub.Models
         public string UserID { get; set; }
 
         [ForeignKey("MD")]
-        [Display(Name = "Membership Type")]
+        [DisplayName("Membership Type")]
         [Required]
         public string MembershipTypeID { get; set; }
 

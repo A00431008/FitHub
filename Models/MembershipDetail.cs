@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 
 namespace FitHub.Models
 {
@@ -10,6 +11,7 @@ namespace FitHub.Models
         public string MembershipTypeID { get; set; }
 
         [Required, StringLength(50)]
+        [Display(Name = "Membership Type")]
         [RegularExpression("^[a-zA-Z]+$", ErrorMessage = "Only alphabets are allowed")]
         public string MembershipTypeName { get; set; }
 

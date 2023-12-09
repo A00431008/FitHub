@@ -14,6 +14,9 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.MD.MembershipTypeName)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.StartDate)
             </th>
             <th>
@@ -22,21 +25,15 @@
             <th>
                 @Html.DisplayNameFor(model => model.AmountPaid)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MD)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.User)
-            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MD.MembershipTypeID)
-                </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MD.MembershipTypeName)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.StartDate)
             </td>

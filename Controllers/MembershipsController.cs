@@ -62,8 +62,12 @@ namespace FitHub.Controllers
         // GET: Memberships/Create
         public IActionResult Create()
         {
+            var claims = User.Claims;
+            var userID = User.FindFirst("UserID")?.Value;
+
             ViewData["MembershipTypeID"] = new SelectList(_context.Set<MembershipDetail>(), "MembershipTypeID", "MembershipTypeName");
-            ViewData["UserID"] = new SelectList(_context.User, "UserID", "UserID");
+            ViewData["UserID"] = userID;
+            ViewData["Details"] = getDetails();
             return View();
         }
 
@@ -103,6 +107,25 @@ namespace FitHub.Controllers
             ViewData["MembershipTypeID"] = new SelectList(_context.Set<MembershipDetail>(), "MembershipTypeID", "MembershipTypeName", membership.MembershipTypeID);
             ViewData["UserID"] = new SelectList(_context.User, "UserID", "UserID", membership.UserID);
             return View(membership);
+        }
+
+        public IActionResult GetMembershipDescription(string membershipTypeId)
+        {
+            
+            string description = _membMgmtService.GetMembershipDetails(membershipTypeId); 
+
+            return Content(description);
+        }
+
+        private Dictionary<string, string> getDetails()
+        {
+            var details = new Dictionary<string, string>();
+            var membDetails = _context.MembershipDetail.ToList();
+            membDetails.ForEach(membDetails =>
+            {
+                details[membDetails.MembershipTypeID] = membDetails.Description;
+            });
+            return details;
         }
 
         private bool MembershipExists(string id)

@@ -27,7 +27,7 @@ namespace FitHub.Data
                     MembershipTypeName = "Standard",
                     DurationMonths = 6,
                     Cost = 400,
-                    Description = "💫 Standard Mebership! Unleash 6 months of boundless fitness opportunities at just $400.00. Embrace a transformative journey with access to top-notch facilities, personalized training sessions, exclusive fitness classes, and unrivaled wellness amenities. Elevate your fitness aspirations and embrace a healthier lifestyle with our six-month membership package tailored to bring out the best in you!"
+                    Description = "💫 Standard Membership! Unleash 6 months of boundless fitness opportunities at just $400.00. Embrace a transformative journey with access to top-notch facilities, personalized training sessions, exclusive fitness classes, and unrivaled wellness amenities. Elevate your fitness aspirations and embrace a healthier lifestyle with our six-month membership package tailored to bring out the best in you!"
                 },
                 new MembershipDetail
                 {
