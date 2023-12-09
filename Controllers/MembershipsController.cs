@@ -29,7 +29,8 @@ namespace FitHub.Controllers
             var userId = User.FindFirst("UserID").Value;
             var memberships = _context.Membership.Include(m => m.MD).Include(m => m.User)
                         .Where(m => (m.UserID == userId && m.EndDate >= DateTime.Now) )
-                        .OrderBy(m => m.StartDate); 
+                        .OrderBy(m => m.StartDate);
+            ViewBag.PaymentSuccessMessage = TempData["PaymentSuccessMessage"] as string;
             return View(await memberships.ToListAsync());
         }
 

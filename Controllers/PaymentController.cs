@@ -50,6 +50,7 @@ namespace FitHub.Controllers
                 _context.Booking.Add(paymentMethod.Booking);
                 _context.SaveChanges();
                 _amenityManagementService.UpdateAmenityCapacity(paymentMethod.Booking);
+                TempData["PaymentSuccessMessage"] = "Payment successful!";
                 return RedirectToAction("Index", "Bookings");
             }
             var bookingJson = JsonConvert.SerializeObject(paymentMethod.Booking);
@@ -88,6 +89,7 @@ namespace FitHub.Controllers
             {
                 _context.Membership.Add(paymentMethod.Membership);
                 _context.SaveChanges();
+                TempData["PaymentSuccessMessage"] = "Payment successful!";
                 return RedirectToAction("Index", "Memberships");
             }
 

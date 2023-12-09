@@ -16,6 +16,13 @@
     } Bookings
 </h1>
 
+@if (!string.IsNullOrEmpty(ViewBag.PaymentSuccessMessage))
+{
+    <div class="alert alert-success">
+        @ViewBag.PaymentSuccessMessage
+    </div>
+} 
+
 <p>
     <a class="btn btn-success" asp-action="Create">Create New</a>
     @if (!currentUrl.Contains("Past")) {
