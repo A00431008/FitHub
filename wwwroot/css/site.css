@@ -149,3 +149,23 @@ hr {
         margin-bottom:  0;
               
     }
+
+    .login-container{
+        margin-top: 56px;
+        padding: 0;
+    }
+
+    .login-form {
+        width:100%;
+        padding-left: 10%;
+        padding-right: 10%;
+    }
+
+    .registration-form {
+        margin: 0 10%;
+    }
+
+    .form-details {
+        padding-left: 10%;
+        padding-right: 10%;
+    }

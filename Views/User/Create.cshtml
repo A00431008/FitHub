@@ -4,103 +4,116 @@
     ViewData["Title"] = "Create";
 }
 
-<div class="details-content body-header d-flex justify-content-between">
-    <h2>Enter your details to Sign Up</h2>
-    <div class="navbuttons">
-        <a class="btn btn-success" asp-action="Index">Back to List</a>
+
+<div class="row card mb-4 registration-form">
+    <div class="details-content body-header d-flex justify-content-between">
+        <h2 class="card-title text-center text-danger">Enter your details to Sign Up</h2>
+        <div class="navbuttons">
+            <a class="btn btn-success" href="/Login">Go to Login</a>
+        </div>
     </div>
-</div>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+    <hr />
+    <br />
+    <div class="col-md-12 form-details">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
+            <div classname="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <strong><label asp-for="Email" class="control-label"></label></strong>
+                        <input asp-for="Email" class="form-control" placeholder="something@domain.com"/>
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <strong><label asp-for="FirstName" class="control-label"></label></strong>
+                            <input asp-for="FirstName" class="form-control" placeholder="First Name"/>
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <strong><label asp-for="LastName" class="control-label"></label></strong>
+                            <input asp-for="LastName" class="form-control" placeholder="Last Name"/>
+                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <strong><label asp-for="PhoneNumber" class="control-label"></label></strong>
+                        <input asp-for="PhoneNumber" class="form-control" placeholder="Enter you phone"/>
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <strong><label asp-for="DOB" class="control-label"></label></strong>
+                            <input type="date" asp-for="DOB" class="form-control" placeholder="MM/DD/YYYY"/>
+                            <span asp-validation-for="DOB" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <strong><label asp-for="Gender" class="control-label"></label></strong>
+                            <select asp-for="Gender" class="form-control">
+                                <option value="" disabled selected>Select</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <span asp-validation-for="Gender" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <strong><label asp-for="Address" class="control-label"></label></strong>
+                        <input asp-for="Address" class="form-control" placeholder="123 Highway Rd"/>
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+                    <div class="row">
+
+                        <div class="form-group col-md-3">
+                            <strong><label asp-for="City" class="control-label"></label></strong>
+                            <input asp-for="City" class="form-control" placeholder="City"/>
+                            <span asp-validation-for="City" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <strong><label asp-for="Country" class="control-label"></label></strong>
+                            <select asp-for="Country" class="form-control" id="countryDropdown">
+                                <option value="" disabled selected>Select</option>
+                                <option value="Canada">Canada</option>
+                                <option value="USA">USA</option>
+                            </select>
+                            <span asp-validation-for="Country" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <strong><label asp-for="Province" class="control-label"></label></strong>
+                            <select asp-for="Province" class="form-control" id="provinceDropdown" disabled>
+                                <option value="">Select</option>
+                            </select>
+                            <span asp-validation-for="Province" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <strong><label asp-for="PostalCode" class="control-label"></label></strong>
+                            <input asp-for="PostalCode" class="form-control" />
+                            <span asp-validation-for="PostalCode" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <strong><label asp-for="Password" class="control-label"></label></strong>
+                            <input asp-for="Password" class="form-control" placeholder="Enter Password"/>
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <strong><label asp-for="ConfirmPassword" class="control-label"></label></strong>
+                            <input asp-for="ConfirmPassword" class="form-control" placeholder="Re-enter Password"/>
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
+            <br />
+            <div class="form-group row">
+                <div class="col-md-8"></div>
+                <input type="submit" value="Create" class="btn btn-primary col-md-4" />
             </div>
-            <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PhoneNumber" class="control-label"></label>
-                <input asp-for="PhoneNumber" class="form-control" />
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DOB" class="control-label"></label>
-                <input type="date" asp-for="DOB" class="form-control" />
-                <span asp-validation-for="DOB" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Gender" class="control-label"></label>
-                <select asp-for="Gender" class="form-control">
-                    <option value="" disabled selected>Select</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Other">Other</option>
-                </select>
-                <span asp-validation-for="Gender" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="City" class="control-label"></label>
-                <input asp-for="City" class="form-control" />
-                <span asp-validation-for="City" class="text-danger"></span>
-            </div>
-            
-            <div class="form-group">
-                <label asp-for="Country" class="control-label"></label>
-                <select asp-for="Country" class="form-control" id="countryDropdown">
-                    <option value="" disabled selected>Select</option>
-                    <option value="Canada">Canada</option>
-                    <option value="USA">USA</option>
-                </select>
-                <span asp-validation-for="Country" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Province" class="control-label"></label>
-                <select asp-for="Province" class="form-control" id="provinceDropdown" disabled>
-                    <option value="">Select</option>
-                </select>
-                <span asp-validation-for="Province" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PostalCode" class="control-label"></label>
-                <input asp-for="PostalCode" class="form-control" />
-                <span asp-validation-for="PostalCode" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ConfirmPassword" class="control-label"></label>
-                <input asp-for="ConfirmPassword" class="form-control" />
-                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
+            <br />
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back </a>
 </div>
 
 

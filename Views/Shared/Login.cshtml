@@ -3,35 +3,43 @@
     ViewData["Title"] = "Login";
 }
 
-<div class="container mt-5">
+<div class="container mt-2 login-container">
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
-                    <h2 class="card-title text-center text-primary">Log In Here</h2>
+                    <h2 class="card-title text-center text-primary">Please Log into you Account.</h2>
                     <hr />
-
-                    <form asp-action="ProceedLogin" method="post">
+                    <br /><br />
+                    <form class="col-md-6 login-form" asp-action="ProceedLogin" method="post">
 
                         <div asp-validation-summary="ModelOnly" class="form-outline mb-4"></div>
 
                         <div class="mb-3">
-                            <label asp-for="Email" class="form-label">Email</label>
-                            <input asp-for="Email" class="form-control" />
+                            <strong><label asp-for="Email" class="form-label">Email</label></strong>
+                            <input asp-for="Email" class="form-control" placeholder="someone@domain.com"/>
                             <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="Password" class="form-label">Password</label>
-                            <input asp-for="Password" type="password" class="form-control" />
+                            <strong><label asp-for="Password" class="form-label">Password</label></strong>
+                            <input asp-for="Password" type="password" class="form-control" placeholder="Enter your Password"/>
                             <span asp-validation-for="Password" class="text-danger"></span>
                         </div>
 
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-primary">Login</button>
+                        <div class="text-center justify-content-between">
+                            <button type="submit" class="btn btn-success col-md-6">Login</button>
+                            <a href="/" class="btn btn-danger col-md-5">Back</a>
                         </div>
-
+                        <div class="justify-content-center">
+                            <h5>
+                                Don't have an account with us?
+                                <a href="@Url.Action("Create", "User")">Sign Up</a>
+                            </h5>
+                        </div>
+                        
                     </form>
+                    
                 </div>
             </div>
         </div>

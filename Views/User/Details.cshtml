@@ -89,6 +89,12 @@
             } 
         }
     </ul>
+    <br />
+    <form asp-controller="User" asp-action="ChangeAdminStatus">
+        <input type="hidden" name="userID" value="@Model.UserID" />
+        <button class="btn btn-danger col-md-4" type="submit">Assign as Admin</button>
+    </form>
+    
 </div>
 
 

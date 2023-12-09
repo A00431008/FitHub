@@ -16,6 +16,11 @@ namespace FitHub.Controllers
 
         public IActionResult Index()
         {
+            var user = User.FindFirst("UserID")?.Value;
+            if ( user != null)
+            {
+                return RedirectToAction("Profile", "User");
+            }
             return View();
         }
 

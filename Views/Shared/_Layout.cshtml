@@ -17,6 +17,23 @@
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">FitHub</a>
             </div>
+            @if(User.FindFirst("status")?.Value == "Administrator")
+            {
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            Manage:
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-controller="User" asp-action="Index">Users</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
+                    </ul>
+                </div>
+            }
+            
         </nav>
     </header>
     <div class="container">

@@ -65,7 +65,8 @@ namespace FitHub.Controllers
                     new Claim("UserID", user.UserID),
                     new Claim("Name", user.FirstName + " " + user.LastName),
                     new Claim("Region", user.City + ", " + user.Province + ", " + user.Country),
-                    new Claim("status", user.IsAdmin ? "Administrator": "Gym User")
+                    new Claim("status", user.IsAdmin ? "Administrator": "Gym User"),
+                    new Claim("Gender", user.Gender)
                 };
 
                 if (user.IsAdmin)

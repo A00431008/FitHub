@@ -110,7 +110,7 @@ namespace FitHub.Controllers
                 user.IsAdmin = !user.IsAdmin;
                 await _context.SaveChangesAsync();
             }
-            return RedirectToAction("Details", new {id = id});
+            return RedirectToAction("Details", id);
         }
 
 

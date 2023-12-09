@@ -1,7 +1,18 @@
 ﻿<div class="card">
     <div class="card-body">
         <div class="d-flex flex-column align-items-center text-center">
-            <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150">
+            @if(User.FindFirst("Gender")?.Value == "Male")
+                {
+                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150">
+
+            } else if (User.FindFirst("Gender")?.Value == "Female")
+            {
+                <img src="https://pm1.narvii.com/6712/bcc1d67f26d861c72cde85b7dae9c41f19117812_00.jpg" alt="Admin" class="rounded-circle" width="150">
+            } else
+            {
+                <img src="https://pm1.narvii.com/6712/bcc1d67f26d861c72cde85b7dae9c41f19117812_00.jpg" alt="Admin" class="rounded-circle" width="150">
+            }
+            
             <div class="mt-3 userProfile row" style="margin-bottom: 10px">
                 <h4 class="text-primary">@User.FindFirst("Name")?.Value</h4>
                 <p class="text-secondary mb-1">@User.FindFirst("status")?.Value</p>
