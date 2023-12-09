@@ -4,7 +4,7 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create an Account</h1>
+<h1>Enter your details to Sign Up</h1>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -69,7 +69,6 @@
                 <label asp-for="Province" class="control-label"></label>
                 <select asp-for="Province" class="form-control" id="provinceDropdown" disabled>
                     <option value="">Select</option>
-                    <!-- Options for provinces/states will be dynamically added using JavaScript -->
                 </select>
                 <span asp-validation-for="Province" class="text-danger"></span>
             </div>
@@ -96,7 +95,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Back </a>
 </div>
 
 
