@@ -23,7 +23,7 @@ namespace FitHub.Models
         public string? CardNumber { get; set; }
 
         [Required(ErrorMessage = "Expiry Date is Required")]
-        [RegularExpression(@"^\d{2}\/\d{4}$",
+        [RegularExpression(@"^(0[1-9]|1[0-2])\/\d{4}$",
             ErrorMessage = "Format should be MM/YYYY")]
         [ExpiryValidation]
         [DisplayName("Expiry Date")]
