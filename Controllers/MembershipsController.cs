@@ -32,8 +32,6 @@ namespace FitHub.Controllers
                         .OrderBy(m => m.StartDate);
             ViewBag.PaymentSuccessMessage = TempData["PaymentSuccessMessage"] as string;
             return View(await memberships.ToListAsync());
-            
-            return View(await memb.ToListAsync());
         }
        //public async Task<IActionResult> Index()
        //{
