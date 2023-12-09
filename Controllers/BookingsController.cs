@@ -33,7 +33,7 @@ namespace FitHub.Controllers
             var bookings = _context.Booking
                         .Include(b => b.Amenity)
                         .Include(b => b.User)
-                        .Where(b => b.UserID == userId && b.BookingDate.Date > DateTime.Now.Date)
+                        .Where(b => b.UserID == userId && b.BookingDate.Date >= DateTime.Now.Date)
                         .OrderBy(b => b.BookingDate);
             ViewBag.PaymentSuccessMessage = TempData["PaymentSuccessMessage"] as string;
             return View("Index", await bookings.ToListAsync());
@@ -45,7 +45,7 @@ namespace FitHub.Controllers
             var pastBookings = _context.Booking
                 .Include(b => b.Amenity)
                 .Include(b => b.User)
-                .Where(b => (b.UserID == userId && b.BookingDate < DateTime.Now))
+                .Where(b => (b.UserID == userId && b.BookingDate.Date < DateTime.Now.Date))
                 .OrderByDescending(b => b.BookingDate);
             return View("Index", await pastBookings.ToListAsync());
         }
