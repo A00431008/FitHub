@@ -6,6 +6,13 @@
 
 <h1>Your active memberships</h1>
 
+@if (!string.IsNullOrEmpty(ViewBag.PaymentSuccessMessage))
+{
+    <div class="alert alert-success">
+        @ViewBag.PaymentSuccessMessage
+    </div>
+}
+
 <p>
     <button class="btn btn-success" asp-controller="Memberships" asp-action="Create">Buy a new membership</button>
 </p>
