@@ -5,7 +5,6 @@ using System.Diagnostics;
 
 namespace FitHub.Controllers
 {
-    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

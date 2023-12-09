@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FitHub.Data;
 using FitHub.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FitHub.Controllers
 {
+    [Authorize(Policy = "RequireAdminRole")]
     public class SwimmingPoolsController : Controller
     {
         private readonly GymDbContext _context;
