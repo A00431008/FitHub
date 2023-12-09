@@ -25,7 +25,6 @@ namespace FitHub.Models
         public decimal Cost { get; set;}
 
         [Required]
-        [Range(1, 500, ErrorMessage = "The field must be greater than 1.")]
         public string Description { get; set;}
     }
 }

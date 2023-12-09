@@ -34,14 +34,9 @@ namespace FitHub.Controllers
             ViewData["UserID"] = userId;
             ViewData["Details"] = getDetails();
             ViewBag.PaymentSuccessMessage = TempData["PaymentSuccessMessage"] as string;
-            return View(await memberships.ToListAsync());
+            return View("Index", await memberships.ToListAsync());
             
         }
-       //public async Task<IActionResult> Index()
-       //{
-       //    var gymDbContext = _context.Membership.Include(m => m.MD).Include(m => m.User);
-       //    return View(await gymDbContext.ToListAsync());
-       //}
 
         // GET: Memberships/Details/5
         public async Task<IActionResult> Details(string id)
@@ -101,6 +96,20 @@ namespace FitHub.Controllers
             ModelState.Remove("User");
             ModelState.Remove("UserId");
             ModelState.Remove("MembershipID");
+
+            var memberships = _context.Membership.Include(m => m.MD).Include(m => m.User)
+                        .Where(m => (m.UserID == userID && m.EndDate >= DateTime.Now))
+                        .OrderBy(m => m.StartDate);
+            foreach(var item in memberships)
+            {
+                if (item.EndDate > membership.StartDate)
+                {
+                    ModelState.AddModelError(string.Empty, "You cannot select this start date as you have an active membership till " + item.EndDate.ToString("MM/dd/yyyy"));
+                    ViewData["MembershipTypeID"] = new SelectList(_context.Set<MembershipDetail>(), "MembershipTypeID", "MembershipTypeName", membership.MembershipTypeID);
+                    ViewData["UserID"] = new SelectList(_context.User, "UserID", "UserID", membership.UserID);
+                    return View(membership);
+                }
+            }
 
             if (ModelState.IsValid)
             {

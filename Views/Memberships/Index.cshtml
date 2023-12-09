@@ -1,19 +1,20 @@
 ﻿@model IEnumerable<FitHub.Models.Membership>
-
+@using Microsoft.AspNetCore.Http.Extensions
 
 @{
     ViewData["Title"] = "Index";
+    string currentUrl = Context.Request.GetDisplayUrl();
 }
 
-<h1>Your active memberships</h1>
-
-<style>
-    .close {
-        text-decoration: none;
-        color: inherit;
-        cursor: pointer;
-    }
-</style> 
+<div class="details-content body-header d-flex justify-content-between">
+        <h2>
+            Your Memberships
+        </h2>
+        <a class="btn btn-success" asp-action="Create">Buy a new membership</a>
+</div>
+<br />
+<hr />
+<br />
 
 
 @if (!string.IsNullOrEmpty(ViewBag.PaymentSuccessMessage))
@@ -26,49 +27,53 @@
     </div>
 }
 
-<p>
-    <button class="btn btn-success" asp-controller="Memberships" asp-action="Create">Buy a new membership</button>
-</p>
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.MD.MembershipTypeName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AmountPaid)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.MD.MembershipTypeName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AmountPaid)
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.MembershipID">Details</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div>
+    
+<div class="body-content">
+    <table class="table table-striped body-content">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.MD.MembershipTypeName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StartDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EndDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AmountPaid)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MD.MembershipTypeName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AmountPaid)
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.MembershipID">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    </div>
+</div>
+
 
 @section scripts {
     <script>
@@ -82,3 +87,11 @@
         });
     </script>
 }
+
+<style>
+    .close {
+        text-decoration: none;
+        color: inherit;
+        cursor: pointer;
+    }
+</style> 
