@@ -30,8 +30,12 @@ namespace FitHub.Controllers
             var memberships = _context.Membership.Include(m => m.MD).Include(m => m.User)
                         .Where(m => (m.UserID == userId && m.EndDate >= DateTime.Now) )
                         .OrderBy(m => m.StartDate);
+            ViewData["MembershipTypeID"] = new SelectList(_context.Set<MembershipDetail>(), "MembershipTypeID", "MembershipTypeName");
+            ViewData["UserID"] = userId;
+            ViewData["Details"] = getDetails();
             ViewBag.PaymentSuccessMessage = TempData["PaymentSuccessMessage"] as string;
             return View(await memberships.ToListAsync());
+            
         }
        //public async Task<IActionResult> Index()
        //{
