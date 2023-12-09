@@ -14,9 +14,12 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using System.Text;
 using System.Security.Cryptography;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FitHub.Controllers
 {
+    [Authorize]
     public class UserController : Controller
     {
         private readonly GymDbContext _context;
@@ -28,6 +31,7 @@ namespace FitHub.Controllers
 
 
         // GET: User
+        [Authorize(Policy ="RequireAdminRole")]
         public async Task<IActionResult> Index()
         {
             return _context.User != null ?
@@ -35,6 +39,16 @@ namespace FitHub.Controllers
                         Problem("Entity set 'GymDbContext.User'  is null.");
         }
 
+        [Authorize]
+        public async Task<IActionResult> Profile()
+        {
+            string userId = User.FindFirst("UserID").Value;
+            var user = await _context.User.FindAsync(userId);
+            return View("Details", user);
+
+        }
+
+        [Authorize(Policy ="RequireAdminRole")]
         // GET: User/Details/5
         public async Task<IActionResult> Details(string id)
         {
@@ -54,6 +68,7 @@ namespace FitHub.Controllers
         }
 
         // GET: User/Create
+        [AllowAnonymous]
         public IActionResult Create()
         {
             return View();
@@ -64,6 +79,7 @@ namespace FitHub.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<IActionResult> Create([Bind("UserID,Email,FirstName,LastName,PhoneNumber,DOB,Gender,Address,City,Province,Country,PostalCode,Password,ConfirmPassword")] User user)
         {
 #pragma warning disable CS8604 // Possible null reference argument.
@@ -82,11 +98,27 @@ namespace FitHub.Controllers
             return View(user);
         }
 
-        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Policy =("RequireAdminRole"))]
+        public async Task<IActionResult> ChangeAdminStatus(string id)
+        {
+            var user = await _context.User
+                .FirstOrDefaultAsync(m => m.UserID == id);
+            if (user != null)
+            {
+                user.IsAdmin = !user.IsAdmin;
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction("Details", new {id = id});
+        }
+
+
 
 #pragma warning restore CS8604 // Possible null reference argument.
 
         // GET: User/Edit/5
+        [Authorize(Policy ="RequireAdminRole")]
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null || _context.User == null)
@@ -108,6 +140,7 @@ namespace FitHub.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "RequireAdminRole")]
         public async Task<IActionResult> Edit(string id, [Bind("UserID,Email,FirstName,LastName,PhoneNumber,DOB,Gender,Address,City,Province,Country,PostalCode,Password")] User user)
         {
             if (id != user.UserID)
@@ -155,6 +188,7 @@ namespace FitHub.Controllers
         }
 
         // GET: User/Delete/5
+        [Authorize(Policy = "RequireAdminRole")]
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null || _context.User == null)
@@ -175,6 +209,7 @@ namespace FitHub.Controllers
         // POST: User/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "RequireAdminRole")]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             if (_context.User == null)
@@ -196,6 +231,7 @@ namespace FitHub.Controllers
             return (_context.User?.Any(e => e.Email == email)).GetValueOrDefault();
         }
 
+        [AllowAnonymous]
         private string HashPassword(string password)
         {
             using (var sha256 = SHA256.Create())

@@ -54,10 +54,18 @@ namespace FitHub.Controllers
                         + user.Password);
                     return View("Login");
                 };
-
+                
                 var claims = new List<Claim> { 
                     new Claim("UserID", user.UserID),
+                    new Claim("Name", user.FirstName + " " + user.LastName),
+                    new Claim("Region", user.City + ", " + user.Province + ", " + user.Country),
+                    new Claim("status", user.IsAdmin ? "Administrator": "Gym User")
                 };
+
+                if (user.IsAdmin)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, "Admin"));
+                }
 
                 var claimsIdentity = new ClaimsIdentity(claims, 
                     CookieAuthenticationDefaults.AuthenticationScheme);
@@ -74,10 +82,17 @@ namespace FitHub.Controllers
                     new ClaimsPrincipal(claimsIdentity), authProperties);
 
 
-                return RedirectToAction("Index", "User");
+                return RedirectToAction("Index", "Home");
             }
             ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
             return View(login);
+        }
+
+        public async Task<IActionResult> LogOut()
+        {
+            await HttpContext.SignOutAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Index", "Home");
         }
 
         public string HashPassword(string password)

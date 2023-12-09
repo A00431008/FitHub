@@ -19,7 +19,6 @@ namespace FitHub.Controllers
             _amenityManagementService = amenityManagementService;
         }
 
-        //[HttpGet]
         public IActionResult BookingPaymentForm()
         {
             var booking = JsonConvert.DeserializeObject<Booking>(TempData["BookingData"] as String);
@@ -30,32 +29,20 @@ namespace FitHub.Controllers
             }
 
             return View("BookingPaymentForm", new PaymentMethod { Booking = booking });
-            /*// Declare and return an empty payment method form at the beginning
-            var paymentMethod = new PaymentMethod();
-            return View(paymentMethod);*/
         }
 
         [HttpPost]
-        /*[Route("/api/payment/process")]*/
-        public IActionResult ProcessBookingPayment(PaymentMethod paymentMethod)
+        public async Task<IActionResult> ProcessBookingPayment(PaymentMethod paymentMethod)
         {
 
-            ModelState.Remove("Booking.User");
-            ModelState.Remove("Booking.UserID");
-            ModelState.Remove("Booking.Amenity");
-            ModelState.Remove("Booking.AmenityID");
-            ModelState.Remove("Booking.BookingID");
-            ModelState.Remove("Booking.AmountPaid");
-            ModelState.Remove("Booking.BookingDate");
-
-            /*string userId = paymentMethod.Booking.UserID;
+            string userId = paymentMethod.Booking.UserID;
             string amenityId = paymentMethod.Booking.AmenityID;
 
-            User user = _context.User.FindAsync(userId);
-            Amenity amenity = _context.Amenity.FindAsync(amenityId);
+            var user = await _context.User.FindAsync(userId);
+            var amenity = await _context.Amenity.FindAsync(amenityId);
 
             paymentMethod.Booking.User = user;
-            paymentMethod.Booking.Amenity = amenity;*/
+            paymentMethod.Booking.Amenity = amenity;
 
             // Always set the payment to success for this project
             if (ModelState.IsValid)
@@ -63,10 +50,11 @@ namespace FitHub.Controllers
                 _context.Booking.Add(paymentMethod.Booking);
                 _context.SaveChanges();
                 _amenityManagementService.UpdateAmenityCapacity(paymentMethod.Booking);
-                //return Ok(new { Success = true, Message = "Payment Successful !!!" });
+                TempData["PaymentSuccessMessage"] = "Payment successful!";
                 return RedirectToAction("Index", "Bookings");
             }
-
+            var bookingJson = JsonConvert.SerializeObject(paymentMethod.Booking);
+            TempData["BookingData"] = bookingJson;
             return View("BookingPaymentForm", paymentMethod);
         }
         public IActionResult MembershipPaymentForm()
@@ -79,33 +67,34 @@ namespace FitHub.Controllers
             }
 
             return View("MembershipPaymentForm", new PaymentMethod { Membership = membership });
-            /*// Declare and return an empty payment method form at the beginning
-            var paymentMethod = new PaymentMethod();
-            return View(paymentMethod);*/
         }
 
         [HttpPost]
-        /*[Route("/api/payment/process")]*/
-        public IActionResult ProcessMembershipPayment(PaymentMethod paymentMethod)
+        public async Task<IActionResult> ProcessMembershipPayment(PaymentMethod paymentMethod)
         {
+            string userId = paymentMethod.Membership.UserID;
+            string membTypeId = paymentMethod.Membership.MembershipTypeID;
 
-            ModelState.Remove("Membership.MembershipID");
-            ModelState.Remove("Membership.UserID");
-            ModelState.Remove("Membership.MembershipTypeID");
-            ModelState.Remove("Membership.StartDate");
-            ModelState.Remove("Membership.EndDate");
-            ModelState.Remove("Membership.AmountPaid");
+            var user = await _context.User.FindAsync(userId);
+            var membDetail = await _context.MembershipDetail.FindAsync(membTypeId);
+
+            paymentMethod.Membership.User = user;
+            paymentMethod.Membership.MD = membDetail;
+
             ModelState.Remove("Membership.MD");
             ModelState.Remove("Membership.User");
-
+            ModelState.Remove("Membership.MembershipID");
             // Always set the payment to success for this project
             if (ModelState.IsValid)
             {
                 _context.Membership.Add(paymentMethod.Membership);
                 _context.SaveChanges();
+                TempData["PaymentSuccessMessage"] = "Payment successful!";
                 return RedirectToAction("Index", "Memberships");
             }
 
+            var membershipJson = JsonConvert.SerializeObject(paymentMethod.Membership);
+            TempData["MembershipData"] = membershipJson;
             return View("MembershipPaymentForm", paymentMethod);
         }
     }

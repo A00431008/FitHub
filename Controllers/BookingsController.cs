@@ -35,6 +35,7 @@ namespace FitHub.Controllers
                         .Where(b => b.UserID == userId)
                         .OrderBy(b => b.BookingDate);
             /*ViewData["AmenityNames"] = getNames();*/
+            ViewBag.PaymentSuccessMessage = TempData["PaymentSuccessMessage"] as string;
             return View("Index", await bookings.ToListAsync());
         }
 
