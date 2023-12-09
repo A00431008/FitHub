@@ -1,15 +1,17 @@
 ﻿@model FitHub.Models.PaymentMethod
 
-<h4>Membership Details</h4>
-<div>
-    <strong>Membership Type</strong> @Model.Membership.MD.MembershipTypeName
-    <strong>Start Date</strong> @Model.Membership.StartDate
-    <strong>End Date</strong> @Model.Membership.EndDate
-    <strong>Total Amount:</strong> @Model.Membership.AmountPaid
+
+<div class="details-content body-header d-flex justify-content-between">
+    <h2>Make a Payment</h2>
+    <div class="navbuttons">
+        <a class="btn btn-danger" asp-controller="Memberships" asp-action="Create">Cancel</a>
+    </div>
 </div>
+
 <hr />
-<div class="row">
-    <div class="col-md-4">
+
+<div class="row body-content payment-form">
+    <div class="col-md-6">
         @using (Html.BeginForm("ProcessMembershipPayment", "Payment", FormMethod.Post))
         {
             @Html.HiddenFor(model => model.Membership.MembershipID)
@@ -22,9 +24,9 @@
             @Html.HiddenFor(model => model.Membership.User)
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+            <div class="form-group col-md-12">
                 @Html.LabelFor(model => model.CardType, new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
+                <div class="col-md-12">
                     @Html.DropDownListFor(model => model.CardType, new SelectList(new[]
                 {
                 new SelectListItem { Value = "Visa", Text = "Visa" },
@@ -37,35 +39,69 @@
 
             <div class="form-group">
                 <label asp-for="NameOnCard" class="control-label"></label>
-                <input asp-for="NameOnCard" class="form-control" />
+                <input asp-for="NameOnCard" class="form-control" placeholder="Exactly like on the card"/>
                 <span asp-validation-for="NameOnCard" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="CardNumber" class="control-label"></label>
-                <input asp-for="CardNumber" class="form-control" />
+                <input asp-for="CardNumber" class="form-control" placeholder="15-16 Digits Only"/>
                 <span asp-validation-for="CardNumber" class="text-danger"></span>
- @*subhi*@       <span id="cardTypeErrorSpan" class="text-danger"></span>
+                <span id="cardTypeErrorSpan" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="ExpiryDate" class="control-label"></label>
-                <input asp-for="ExpiryDate" class="form-control" />
-                <span asp-validation-for="ExpiryDate" class="text-danger"></span>
- @*subhi*@       <span id="expiryDateErrorSpan" class="text-danger"></span>
+            <div class="row align-content-between">
+                <div class="form-group col-6">
+                    <label asp-for="ExpiryDate" class="control-label"></label>
+                    <input asp-for="ExpiryDate" class="form-control" placeholder="MM/YYYY"/>
+                    <span asp-validation-for="ExpiryDate" class="text-danger"></span>
+                    <span id="expiryDateErrorSpan" class="text-danger"></span>
+                </div>
+                <div class="form-group col-6">
+                    <label asp-for="CVV" class="control-label"></label>
+                    <input asp-for="CVV" class="form-control" placeholder="3-4 Digits Only"/>
+                    <span asp-validation-for="CVV" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="CVV" class="control-label"></label>
-                <input asp-for="CVV" class="form-control" />
-                <span asp-validation-for="CVV" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary">Process Payment</button>
+            <br />
+            <div class="form-group row">
+                <div class="col-md-6"> </div>
+                <button type="submit" class="btn btn-primary col-md-6">Process Payment</button>
             </div>
         }
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
+    <div class="col-md-6">
+        <h3>Transaction Details</h3>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex align-items-center flex-wrap">
+                <h6 class="mb-0 col-sm-4">
+                    Membership Type:
+                </h6 class = "col-sm-6">
+                <span class="text-secondary">@Model.Membership.MD.MembershipTypeName</span>
+            </li>
+            <li class="list-group-item d-flex align-items-center flex-wrap">
+                <h6 class="mb-0 col-sm-4">
+                    Start Date:
+                </h6>
+                <span class="text-secondary">@Model.Membership.StartDate.ToString("MM/dd/yyyy")</span>
+            </li>
+            <li class="list-group-item d-flex align-items-center flex-wrap">
+                <h6 class="mb-0 col-sm-4">
+                    End Date:
+                </h6>
+                <span class="text-secondary">@Model.Membership.EndDate.ToString("MM/dd/yyyy")</span>
+            </li>
+            <li class="list-group-item d-flex align-items-center flex-wrap">
+                <h6 class="mb-0 col-sm-4">
+                    Total Amount:
+                </h6>
+                <span class="text-secondary">$@Model.Membership.AmountPaid</span>
+            </li>
+        </ul>
+        <br />
+        <h6>Instructions:</h6>
+        <p>Please Enter the Name exactly as it appears on your card. <br/>
+            Also, please do not put any spaces or '-' on your card number.    
+        </p>
+    </div>
 </div>
 
 @section Scripts {

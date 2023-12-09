@@ -4,54 +4,47 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Buy a membership</h1>
-
-<h5>Please select a membership from the dropdown list, and choose the start date</h5>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            @*<div class="form-group">
-                <label asp-for="UserID" class="control-label"></label>
-                <select asp-for="UserID" class ="form-control" asp-items="ViewBag.UserID"></select>
-            </div>*@
-            <div class="form-group">
-                <label asp-for="MembershipTypeID" class="control-label"></label>
-                <select asp-for="MembershipTypeID" class ="form-control" asp-items="ViewBag.MembershipTypeID">
-                    <option value="" disabled selected>Choose a membership</option> <!-- Default value -->
-                </select>
-            </div>
-            <div class="form-group">
-                <label asp-for="StartDate" class="control-label"></label>
-                <input asp-for="StartDate" class="form-control" />
-                <span asp-validation-for="StartDate" class="text-danger"></span>
-            </div>
-            @*<div class="form-group">
-                <label asp-for="EndDate" class="control-label"></label>
-                <input asp-for="EndDate" class="form-control" />
-                <span asp-validation-for="EndDate" class="text-danger"></span>
-            </div>*@
-            @*<div class="form-group">
-                <label asp-for="AmountPaid" class="control-label"></label>
-                <input asp-for="AmountPaid" class="form-control" />
-                <span asp-validation-for="AmountPaid" class="text-danger"></span>
-            </div>*@
-            <br />
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+<div class="details-content body-header d-flex justify-content-between">
+    <h2>Purchase a membership</h2>
+    <div class="navbuttons">
+        <a class="btn btn-success" asp-action="Index">Back</a>
     </div>
-    <div class="col-md-4">
-        <div id="membershipDescriptionDiv">
-            
-            <p id="membershipDescription"></p>
+</div>
+<hr />
+<br />
+<div class="body-content">
+    <h6>Please select a membership from the dropdown list, and choose the start date</h6>
+    <div class="row">
+        <div class="col-md-6">
+            <form class=" card-body" asp-action="Create">
+                <div class="form-group">
+                    <label asp-for="MembershipTypeID" class="control-label"></label>
+                    <select asp-for="MembershipTypeID" class="form-control" asp-items="ViewBag.MembershipTypeID">
+                        <option value="" disabled selected>Choose a membership</option> <!-- Default value -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="StartDate" class="control-label"></label>
+                    <input asp-for="StartDate" class="form-control" />
+                    <span asp-validation-for="StartDate" class="text-danger"></span>
+                </div>
+                <br />
+                <div class="form-group row">
+                    <div class="col-md-6"> </div>
+                    <input type="submit" value="Proceed" class="btn btn-primary col-md-6" />
+                </div>
+                <br />
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            </form>
+        </div>
+        <div class="col-md-6">
+            <div id="membershipDescriptionDiv" class="word-wrap">
+
+                <p id="membershipDescription"></p>
+            </div>
         </div>
     </div>
 </div>
-
-
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

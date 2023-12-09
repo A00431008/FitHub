@@ -50,9 +50,6 @@ namespace FitHub.Controllers
                 .OrderByDescending(b => b.BookingDate);
             return View("Index", await pastBookings.ToListAsync());
         }
-
-        // GET: Bookings
-        /*[Route("/Bookings/DisplayBookings")]*/
     
 
         // GET: Bookings/Details/5

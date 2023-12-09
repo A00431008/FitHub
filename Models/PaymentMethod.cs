@@ -34,13 +34,12 @@ namespace FitHub.Models
         public string? CVV { get; set; }
         public Booking? Booking { get; set; }
         public Membership? Membership{ get; set; }
-
-#pragma warning disable CS8604 // Possible null reference argument.        
+       
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             var regExpression = @"^4[0-9]{15}|5[1-5][0-9]{14}|3[47][0-9]{13}$";
 
-            if (!Regex.IsMatch(CardNumber, regExpression))
+            if (CardNumber == null || !Regex.IsMatch(CardNumber, regExpression))
             {
                 yield return new ValidationResult("Invalid Card Number", new[] { nameof(CardNumber) });
             }
@@ -53,6 +52,12 @@ namespace FitHub.Models
 
         private bool ValidateCardbyType()
         {
+
+            if (CardNumber == null)
+            {
+                return false;
+            }
+
             string? VisaRegex = @"^4[0-9]{15}$";
             string? MasterCardRegex = @"^5[1-5][0-9]{14}$";
             string? AmexRegex = @"^3[47][0-9]{13}$";
@@ -70,7 +75,6 @@ namespace FitHub.Models
                     return false;
             }
         }
-#pragma warning restore CS8604 // Possible null reference argument.
     }
 
     // VALIDATION for Expiry Date of the Card
